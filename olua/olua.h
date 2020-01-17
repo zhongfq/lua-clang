@@ -279,7 +279,6 @@ typedef lua_Integer lua_Unsigned;
     lua_createtable(L, 0, sizeof(l)/sizeof((l)[0]) - 1);\
     olua_setfuncs(L,(l),0);                             \
 }
-OLUA_API void *lua_getextraspace(lua_State *L);
 OLUA_API void lua_setuservalue(lua_State *L, int idx);
 OLUA_API int lua_getuservalue(lua_State *L, int idx);
 OLUA_API int lua_absindex(lua_State *L, int idx);

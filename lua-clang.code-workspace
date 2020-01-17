@@ -5,6 +5,6 @@
 		}
 	],
 	"settings": {
-		"cmake.configureArgs": ["-DLLVM_ENABLE_PROJECTS=clang", "-DLIBCLANG_BUILD_STATIC=ON"],
+		"cmake.configureOnOpen": false
 	}
 }
