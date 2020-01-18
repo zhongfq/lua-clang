@@ -616,7 +616,7 @@ static int l_tu_file(lua_State *L)
     const char *file = olua_checkstring(L, 2);
     CXFile f = clang_getFile(tu, file);
     olua_pushCXString(L, clang_getFileName(f));
-    lua_pushnumber(L, clang_getFileTime(f));
+    lua_pushnumber(L, (lua_Number)clang_getFileTime(f));
     return 2;
 }
 

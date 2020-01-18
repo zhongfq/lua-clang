@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.10)
 # cmake -DLLVM_ENABLE_PROJECTS=clang -DLIBCLANG_BUILD_STATIC=ON ../..
 
 # mkdir -p build\vs-build && cd build\vs-build
-# cmake -DLLVM_ENABLE_PROJECTS=clang -DLIBCLANG_BUILD_STATIC=ON -DENABLE_STATIC=STATIC -A Win32 -Thost=x64 ../..
+# cmake -DLLVM_ENABLE_PROJECTS=clang -DLIBCLANG_BUILD_STATIC=ON -DENABLE_STATIC=STATIC ../..
 # cmake --build . --config release --target luaclang
 
 project(luaclang)
