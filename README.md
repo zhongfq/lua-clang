@@ -9,6 +9,7 @@ build clang for lua
     ```sh
     git clone https://github.com/llvm/llvm-project.git
     git clone https://github.com/zhongfq/lua-clang.git
+    cd lua-clang
     ```
 
 - build on windows:
