@@ -1,12 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
 
-# mkdir -p build/mac-build && cd build/mac-build
-# cmake -DLLVM_ENABLE_PROJECTS=clang -DLIBCLANG_BUILD_STATIC=ON ../..
-
-# mkdir -p build\vs-build && cd build\vs-build
-# cmake -DLLVM_ENABLE_PROJECTS=clang -DLIBCLANG_BUILD_STATIC=ON -DENABLE_STATIC=STATIC ../..
-# cmake --build . --config release --target luaclang
-
 project(luaclang)
 
 set(LLVM_PROJECT ${CMAKE_CURRENT_SOURCE_DIR}/../llvm-project)

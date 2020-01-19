@@ -1,2 +1,40 @@
 # lua-clang
 build clang for lua
+
+## how to use
+
+- install cmake and python
+
+- clone llvm-project and lua-clang
+    ```sh
+    git clone https://github.com/llvm/llvm-project.git
+    git clone https://github.com/zhongfq/lua-clang.git
+    ```
+
+- build on windows:
+    ```sh
+    mkdir -p build\vs-build && cd build\vs-build
+    cmake -DLLVM_ENABLE_PROJECTS=clang -DLIBCLANG_BUILD_STATIC=ON -DENABLE_STATIC=STATIC ../..
+    cmake --build . --config release --target luaclang
+    ```
+
+- build on mac:
+    ```sh
+    mkdir -p build/mac-build && cd build/mac-build
+    cmake -DLLVM_ENABLE_PROJECTS=clang -DLIBCLANG_BUILD_STATIC=ON ../..
+    cmake --build . --config release --target luaclang
+    ```
+
+- build on linux:
+    ```sh
+    mkdir -p build/linux-build && cd build/linux-build
+    cmake -DLLVM_ENABLE_PROJECTS=clang -DLIBCLANG_BUILD_STATIC=ON ../..
+    cmake --build . --config release --target luaclang
+    ```
+
+- build lua:
+    ```sh
+    cmake --build . --config release --target lua
+    cmake --build . --config release --target luac
+    cmake --build . --config release --target liblua
+    ```
