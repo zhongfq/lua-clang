@@ -16,6 +16,7 @@ if(WIN32)
 endif()
 
 add_subdirectory(${LLVM_PROJECT}/llvm ${CMAKE_CURRENT_BINARY_DIR}/llvm)
+add_subdirectory(lua)
 
 add_library(luaclang MODULE lua_clang.cpp olua/olua.c)
 set_target_properties(luaclang PROPERTIES 
@@ -29,8 +30,7 @@ target_include_directories(luaclang PUBLIC
 if(APPLE)
     target_link_options(luaclang PUBLIC -bundle -undefined dynamic_lookup)
 elseif(WIN32)
-    find_library(LIBLUA NAMES lua)
-    target_link_libraries(luaclang ${LIBLUA})
+    target_link_libraries(luaclang liblua)
     set_target_properties(libclang_static PROPERTIES OUTPUT_NAME libclang_static)
 endif()
 
