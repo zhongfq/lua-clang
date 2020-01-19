@@ -14,7 +14,7 @@ build clang for lua
 
 - build on windows:
     ```sh
-    mkdir -p build\vs-build && cd build\vs-build
+    mkdir build\vs-build && cd build\vs-build
     cmake -DLLVM_ENABLE_PROJECTS=clang -DLIBCLANG_BUILD_STATIC=ON -DENABLE_STATIC=STATIC ../..
     cmake --build . --config release --target luaclang
     ```
@@ -33,9 +33,11 @@ build clang for lua
     cmake --build . --config release --target luaclang
     ```
 
-- build lua:
+- you also can build lua:
     ```sh
     cmake --build . --config release --target lua
     cmake --build . --config release --target luac
     cmake --build . --config release --target liblua
     ```
+
+how to use clang see [cocos-lua bindings geneator](https://github.com/zhongfq/cocos-lua/tree/v4/tools/lua-bindings).
