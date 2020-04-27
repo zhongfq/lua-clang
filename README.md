@@ -5,9 +5,8 @@ build clang for lua
 
 - install cmake and python
 
-- clone llvm-project and lua-clang
+- clone lua-clang
     ```sh
-    git clone https://github.com/llvm/llvm-project.git
     git clone https://github.com/zhongfq/lua-clang.git
     cd lua-clang
     git submodule init
