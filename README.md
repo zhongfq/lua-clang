@@ -23,15 +23,15 @@ build clang for lua
 - build on mac:
     ```sh
     mkdir -p build/mac-build && cd build/mac-build
-    cmake -DLLVM_ENABLE_PROJECTS=clang -DLIBCLANG_BUILD_STATIC=ON ../..
-    cmake --build . --config release --target luaclang
+    cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS=clang -DLIBCLANG_BUILD_STATIC=ON ../..
+    cmake --build . --target luaclang
     ```
 
 - build on linux:
     ```sh
     mkdir -p build/linux-build && cd build/linux-build
-    cmake -DLLVM_ENABLE_PROJECTS=clang -DLIBCLANG_BUILD_STATIC=ON ../..
-    cmake --build . --config release --target luaclang
+    cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS=clang -DLIBCLANG_BUILD_STATIC=ON ../..
+    cmake --build . --target luaclang
     ```
 
 - you also can build lua:
