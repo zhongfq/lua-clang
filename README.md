@@ -16,21 +16,21 @@ build clang for lua
 - build on windows:
     ```sh
     mkdir build\vs-build && cd build\vs-build
-    cmake -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD=X86 -DLIBCLANG_BUILD_STATIC=ON -DENABLE_STATIC=STATIC ../..
+    cmake -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD= -DLIBCLANG_BUILD_STATIC=ON -DENABLE_STATIC=STATIC ../..
     cmake --build . --config release --target luaclang
     ```
 
 - build on mac:
     ```sh
     mkdir -p build/mac-build && cd build/mac-build
-    cmake -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_BUILD_TYPE=Release -DLIBCLANG_BUILD_STATIC=ON ../.. 
+    cmake -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD= -DCMAKE_BUILD_TYPE=Release -DLIBCLANG_BUILD_STATIC=ON ../.. 
     cmake --build . --target luaclang
     ```
 
 - build on linux:
     ```sh
     mkdir -p build/linux-build && cd build/linux-build
-    cmake -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_BUILD_TYPE=Release -DLIBCLANG_BUILD_STATIC=ON ../.. 
+    cmake -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD= -DCMAKE_BUILD_TYPE=Release -DLIBCLANG_BUILD_STATIC=ON ../.. 
     cmake --build . --target luaclang
     cmake --build . --target luaclang
     ```
