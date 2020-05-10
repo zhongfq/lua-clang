@@ -32,7 +32,6 @@ build clang for lua
     mkdir -p build/linux-build && cd build/linux-build
     cmake -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD= -DCMAKE_BUILD_TYPE=Release -DLIBCLANG_BUILD_STATIC=ON ../.. 
     cmake --build . --target luaclang
-    cmake --build . --target luaclang
     ```
 
 - you also can build lua:
