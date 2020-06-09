@@ -64,7 +64,7 @@ static int l_type_kind(lua_State *L)
     return 1;
 }
 
-static int l_type_canonical(lua_State *L)
+static int l_type_canonicalType(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     olua_pushCXType(L, clang_getCanonicalType(type));
@@ -93,7 +93,7 @@ static int l_type_declaration(lua_State *L)
     return 1;
 }
 
-static int l_type_pointee(lua_State *L)
+static int l_type_pointeeType(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     olua_pushCXType(L, clang_getPointeeType(type));
@@ -107,10 +107,24 @@ static int l_type_clang_getTypedefName(lua_State *L)
     return 1;
 }
 
-static int l_type_isConst(lua_State *L)
+static int l_type_isConstQualifiedType(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     lua_pushboolean(L, clang_isConstQualifiedType(type));
+    return 1;
+}
+
+static int l_type_isRestrictQualifiedType(lua_State *L)
+{
+    CXType type = olua_toCXType(L, 1);
+    lua_pushboolean(L, clang_isRestrictQualifiedType(type));
+    return 1;
+}
+
+static int l_type_isVolatileQualifiedType(lua_State *L)
+{
+    CXType type = olua_toCXType(L, 1);
+    lua_pushboolean(L, clang_isVolatileQualifiedType(type));
     return 1;
 }
 
@@ -121,19 +135,45 @@ static int l_type_clang_getResultType(lua_State *L)
     return 1;
 }
 
+static int l_type_clang_argTypes(lua_State *L)
+{
+    CXType type = olua_toCXType(L, 1);
+    int total = clang_getNumArgTypes(type);
+    lua_createtable(L, total, 0);
+    for (int i = 0; i < total; i++) {
+        olua_pushCXType(L, clang_getArgType(type, i));
+    }
+    return 1;
+}
+
+static int l_type_clang_Type_getNumTemplateArguments(lua_State *L)
+{
+    CXType type = olua_toCXType(L, 1);
+    int total = clang_Type_getNumTemplateArguments(type);
+    lua_createtable(L, total, 0);
+    for (int i = 0; i < total; i++) {
+        olua_pushCXType(L, clang_Type_getTemplateArgumentAsType(type, i));
+    }
+    return 1;
+}
+
 static int luaopen_clang_type(lua_State *L)
 {
     oluacls_class(L, CLANG_TYPE, NULL);
     oluacls_func(L, "__eq", l_type_eq);
     oluacls_func(L, "name", l_type_name);
     oluacls_func(L, "kind", l_type_kind);
-    oluacls_func(L, "canonical", l_type_canonical);
+    oluacls_func(L, "canonicalType", l_type_canonicalType);
     oluacls_func(L, "isPod", l_type_isPod);
     oluacls_func(L, "declaration", l_type_declaration);
-    oluacls_func(L, "pointee", l_type_pointee);
+    oluacls_func(L, "pointeeType", l_type_pointeeType);
     oluacls_func(L, "typedefName", l_type_clang_getTypedefName);
-    oluacls_func(L, "isConst", l_type_isConst);
+    oluacls_func(L, "isConst", l_type_isConstQualifiedType);
+    oluacls_func(L, "isRestrict", l_type_isRestrictQualifiedType);
+    oluacls_func(L, "isVolatile", l_type_isVolatileQualifiedType);
     oluacls_func(L, "resultType", l_type_clang_getResultType);
+    oluacls_func(L, "argTypes", l_type_clang_argTypes);
+    oluacls_func(L, "templateArgumentAsType", l_type_clang_argTypes);
     return 1;
 }
 
@@ -290,32 +330,6 @@ static int l_cursor_name(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     olua_pushCXString(L, clang_getCursorSpelling(cur));
-    return 1;
-}
-
-static int l_cursor_fullname(lua_State *L)
-{
-    lua_settop(L, 1);
-    CXCursor cur = olua_toCXCursor(L, 1);
-    if (clang_getCursorKind(cur) == CXCursor_Namespace ||
-        clang_getCursorKind(cur) == CXCursor_NamespaceAlias) {
-        olua_pushCXString(L, clang_getCursorSpelling(cur));
-        while(true) {
-            cur = clang_getCursorSemanticParent(cur);
-            if (clang_getCursorKind(cur) != CXCursor_TranslationUnit) {
-                lua_pushliteral(L, "::");
-                lua_insert(L, 2);
-                olua_pushCXString(L, clang_getCursorSpelling(cur));
-                lua_insert(L, 2);
-            } else {
-                break;
-            }
-        }
-    } else {
-        CXType type = clang_getCursorType(cur);
-        olua_pushCXString(L, clang_getTypeSpelling(type));
-    }
-    lua_concat(L, lua_gettop(L) - 1);
     return 1;
 }
 
@@ -570,7 +584,6 @@ static int luaopen_clang_cursor(lua_State *L)
     oluacls_class(L, CLANG_CURSOR, NULL);
     oluacls_func(L, "__eq", l_cursor_eq);
     oluacls_func(L, "name", l_cursor_name);
-    oluacls_func(L, "fullname", l_cursor_fullname);
     oluacls_func(L, "kind", l_cursor_kind);
     oluacls_func(L, "type", l_cursor_type);
     oluacls_func(L, "displayName", l_cursor_displayName);
