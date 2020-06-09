@@ -7,3 +7,7 @@
 [submodule "lua"]
 	path = lua
 	url = https://github.com/zhongfq/lua.git
+[submodule "lua53"]
+	path = lua53
+	url = https://github.com/zhongfq/lua.git
+	branch = v5.3
