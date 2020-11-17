@@ -1,4 +1,6 @@
 # lua-clang
+[![CMake Build Status](https://github.com/zhongfq/lua-clang/workflows/CMake/badge.svg)](https://github.com/zhongfq/lua-clang/actions?query=workflow:cmake)
+
 build clang for lua
 
 ## how to use
