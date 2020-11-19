@@ -1,0 +1,28 @@
+name: windows
+
+on: [push]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - name: Create Build Environment
+      run: cmake -E make_directory build
+
+    - name: Configure CMake
+      shell: cmd
+      working-directory: build
+      run: cmake %GITHUB_WORKSPACE% -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD= -DLIBCLANG_BUILD_STATIC=ON -DENABLE_STATIC=STATIC
+
+    - name: Build
+      working-directory: build
+      shell: cmd
+      run: cmake --build . --target luaclang --config %BUILD_TYPE%

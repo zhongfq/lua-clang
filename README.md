@@ -1,5 +1,7 @@
 # lua-clang
-[![CMake Build Status](https://github.com/zhongfq/lua-clang/workflows/CMake/badge.svg)](https://github.com/zhongfq/lua-clang/actions?query=workflow:cmake)
+[![Linux Build Status](https://github.com/zhongfq/lua-clang/workflows/linux/badge.svg)](https://github.com/zhongfq/lua-clang/actions?query=workflow:linux)
+[![Windows Build Status](https://github.com/zhongfq/lua-clang/workflows/macos/badge.svg)](https://github.com/zhongfq/lua-clang/actions?query=workflow:macos)
+[![Macos Build Status](https://github.com/zhongfq/lua-clang/workflows/windows/badge.svg)](https://github.com/zhongfq/lua-clang/actions?query=workflow:windows)
 
 build clang for lua
 

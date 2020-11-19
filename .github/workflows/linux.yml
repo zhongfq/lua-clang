@@ -1,4 +1,4 @@
-name: CMake
+name: linux
 
 on: [push]
 
@@ -15,14 +15,14 @@ jobs:
         submodules: 'recursive'
 
     - name: Create Build Environment
-      run: cmake -E make_directory ${{runner.workspace}}/build
+      run: cmake -E make_directory build
 
     - name: Configure CMake
       shell: bash
-      working-directory: ${{runner.workspace}}/build
+      working-directory: build
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD= -DLIBCLANG_BUILD_STATIC=ON
 
     - name: Build
-      working-directory: ${{runner.workspace}}/build
+      working-directory: build
       shell: bash
       run: cmake --build . --target luaclang --config $BUILD_TYPE
