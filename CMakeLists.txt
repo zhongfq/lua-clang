@@ -2,7 +2,17 @@ cmake_minimum_required(VERSION 3.10)
 
 project(luaclang)
 
-set(LUA_VERSION "lua54" CACHE STRING "lua version to use, default is lua54")
+# llvm-project/llvm/CMakeLists.txt
+set(LLVM_ENABLE_PROJECTS "clang" CACHE STRING "")
+set(LLVM_TARGETS_TO_BUILD "" CACHE STRING "")
+
+# llvm-project/clang/tools/libclang/CMakeLists.txt
+set(LIBCLANG_BUILD_STATIC ON CACHE BOOL "")
+if(WIN32)
+    set(ENABLE_STATIC STATIC CACHE UNINITIALIZED "")
+endif()
+
+set(LUA "lua54" CACHE STRING "lua version to use, default is lua54")
 
 if(WIN32)
     add_definitions(-D_CINDEX_LIB_)
@@ -10,9 +20,9 @@ endif()
 
 add_subdirectory(llvm-project/llvm)
 
-if(LUA_VERSION STREQUAL "lua54")
+if(LUA STREQUAL "lua54")
     add_subdirectory(lua)
-elseif(LUA_VERSION STREQUAL "lua53")
+elseif(LUA STREQUAL "lua53")
     add_subdirectory(lua53)
 else()
     message(FATAL_ERROR "only support lua53 or lua54")
@@ -27,11 +37,11 @@ target_include_directories(luaclang PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/llvm-project/clang/include
 )
 
-if(LUA_VERSION STREQUAL "lua54")
+if(LUA STREQUAL "lua54")
     target_include_directories(luaclang PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/lua
     )
-elseif(LUA_VERSION STREQUAL "lua53")
+elseif(LUA STREQUAL "lua53")
     target_include_directories(luaclang PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/lua53
     )

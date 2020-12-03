@@ -17,25 +17,12 @@ build clang for lua
     git submodule update
     ```
 
-- build on windows:
+- build on windows cmd, mac or linux terminal:
     ```sh
-    mkdir build\vs-build && cd build\vs-build
-    cmake -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD= -DLIBCLANG_BUILD_STATIC=ON -DENABLE_STATIC=STATIC ../..
-    cmake --build . --config release --target luaclang
-    ```
-
-- build on mac:
-    ```sh
-    mkdir -p build/mac-build && cd build/mac-build
-    cmake -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD= -DCMAKE_BUILD_TYPE=Release -DLIBCLANG_BUILD_STATIC=ON ../.. 
-    cmake --build . --target luaclang
-    ```
-
-- build on linux:
-    ```sh
-    mkdir -p build/linux-build && cd build/linux-build
-    cmake -DLLVM_ENABLE_PROJECTS=clang -DLLVM_TARGETS_TO_BUILD= -DCMAKE_BUILD_TYPE=Release -DLIBCLANG_BUILD_STATIC=ON ../.. 
-    cmake --build . --target luaclang
+    mkdir build && cd build
+    cmake ../.. -DCMAKE_BUILD_TYPE=Release
+    # cmake ../.. -DCMAKE_BUILD_TYPE=Release -DLUA=lua53
+    cmake --build . --config Release --target luaclang
     ```
 
 - you also can build lua:
