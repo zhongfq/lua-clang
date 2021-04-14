@@ -142,6 +142,7 @@ static int l_type_clang_argTypes(lua_State *L)
     lua_createtable(L, total, 0);
     for (int i = 0; i < total; i++) {
         olua_pushCXType(L, clang_getArgType(type, i));
+        olua_rawseti(L, -2, i + 1);
     }
     return 1;
 }
@@ -153,6 +154,7 @@ static int l_type_clang_Type_getNumTemplateArguments(lua_State *L)
     lua_createtable(L, total, 0);
     for (int i = 0; i < total; i++) {
         olua_pushCXType(L, clang_Type_getTemplateArgumentAsType(type, i));
+        olua_rawseti(L, -2, i + 1);
     }
     return 1;
 }
@@ -173,7 +175,7 @@ static int luaopen_clang_type(lua_State *L)
     oluacls_func(L, "isVolatile", l_type_isVolatileQualifiedType);
     oluacls_func(L, "resultType", l_type_clang_getResultType);
     oluacls_func(L, "argTypes", l_type_clang_argTypes);
-    oluacls_func(L, "templateArgumentAsType", l_type_clang_argTypes);
+    oluacls_func(L, "templateArgumentAsType", l_type_clang_Type_getNumTemplateArguments);
     return 1;
 }
 

@@ -16,6 +16,7 @@ set(LUA "lua54" CACHE STRING "lua version to use, default is lua54")
 
 if(WIN32)
     add_definitions(-D_CINDEX_LIB_)
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Od")
 endif()
 
 add_subdirectory(llvm-project/llvm)
