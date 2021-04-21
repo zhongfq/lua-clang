@@ -11,6 +11,43 @@
 #define olua_toCXCursor(L, idx)             (*(CXCursor *)luaL_checkudata(L, idx, CLANG_CURSOR))
 #define olua_toCXType(L, idx)               (*(CXType *)luaL_checkudata(L, idx, CLANG_TYPE))
 
+static int index_error(lua_State *L)
+{
+    const char *cls = olua_checkstring(L, lua_upvalueindex(1));
+    const char *key = olua_tostring(L, 2);
+    luaL_error(L, "index '%s' of '%s' is not available", key, cls);
+    return 0;
+}
+
+static int newindex_error(lua_State *L)
+{
+    const char *cls = olua_checkstring(L, lua_upvalueindex(1));
+    const char *key = olua_tostring(L, 2);
+    luaL_error(L, "newindex '%s' of '%s' is not available", key, cls);
+    return 0;
+}
+
+static void set_index_notfound_error(lua_State *L, int idx, const char *cls)
+{
+    int top = lua_gettop(L);
+    idx = lua_absindex(L, idx);
+    lua_pushfstring(L, "%s.notfound", cls);
+    if (olua_getmetatable(L, olua_tostring(L, -1)) != LUA_TTABLE) {
+        lua_pop(L, 1);
+        luaL_newmetatable(L, olua_tostring(L, -1));
+        lua_pushstring(L, cls);
+        lua_pushcclosure(L, index_error, 1);
+        lua_setfield(L, -2, "__index");
+        lua_pushstring(L, cls);
+        lua_pushcclosure(L, newindex_error, 1);
+        lua_setfield(L, -2, "__newindex");
+        lua_pushvalue(L, -1);
+        lua_setmetatable(L, -2);
+    }
+    lua_setuservalue(L, idx);
+    lua_settop(L, top);
+}
+
 static void olua_pushCXCursor(lua_State *L, CXCursor cur)
 {
     if (clang_Cursor_isNull(cur)) {
@@ -18,6 +55,7 @@ static void olua_pushCXCursor(lua_State *L, CXCursor cur)
     } else {
         *(CXCursor *)lua_newuserdata(L, sizeof(CXCursor)) = cur;
         olua_setmetatable(L, CLANG_CURSOR);
+        set_index_notfound_error(L, -1, CLANG_CURSOR);
     }
 }
 
@@ -28,6 +66,7 @@ static void olua_pushCXType(lua_State *L, CXType type)
     } else {
         *(CXType *)lua_newuserdata(L, sizeof(CXType)) = type;
         olua_setmetatable(L, CLANG_TYPE);
+        set_index_notfound_error(L, -1, CLANG_TYPE);
     }
 }
 
@@ -50,35 +89,35 @@ static void olua_pushDiagnostic(lua_State *L, CXDiagnostic diag) {
     clang_disposeDiagnostic(diag);
 }
 
-static int l_type_name(lua_State *L)
+static int ltype_clang_getTypeSpelling(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     olua_pushCXString(L, clang_getTypeSpelling(type));
     return 1;
 }
 
-static int l_type_kind(lua_State *L)
+static int ltype_clang_getTypeKindSpelling(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     olua_pushCXString(L, clang_getTypeKindSpelling(type.kind));
     return 1;
 }
 
-static int l_type_canonicalType(lua_State *L)
+static int ltype_clang_getCanonicalType(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     olua_pushCXType(L, clang_getCanonicalType(type));
     return 1;
 }
 
-static int l_type_isPod(lua_State *L)
+static int ltype_clang_isPODType(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     lua_pushboolean(L, clang_isPODType(type));
     return 1;
 }
 
-static int l_type_eq(lua_State *L)
+static int ltype_clang_equalTypes(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     CXType type2 = olua_toCXType(L, 2);
@@ -86,56 +125,56 @@ static int l_type_eq(lua_State *L)
     return 1;
 }
 
-static int l_type_declaration(lua_State *L)
+static int ltype_clang_getTypeDeclaration(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     olua_pushCXCursor(L, clang_getTypeDeclaration(type));
     return 1;
 }
 
-static int l_type_pointeeType(lua_State *L)
+static int ltype_clang_getPointeeType(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     olua_pushCXType(L, clang_getPointeeType(type));
     return 1;
 }
 
-static int l_type_clang_getTypedefName(lua_State *L)
+static int ltype_clang_getTypedefName(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     olua_pushCXString(L, clang_getTypedefName(type));
     return 1;
 }
 
-static int l_type_isConstQualifiedType(lua_State *L)
+static int ltype_clang_isConstQualifiedType(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     lua_pushboolean(L, clang_isConstQualifiedType(type));
     return 1;
 }
 
-static int l_type_isRestrictQualifiedType(lua_State *L)
+static int ltype_clang_isRestrictQualifiedType(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     lua_pushboolean(L, clang_isRestrictQualifiedType(type));
     return 1;
 }
 
-static int l_type_isVolatileQualifiedType(lua_State *L)
+static int ltype_clang_isVolatileQualifiedType(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     lua_pushboolean(L, clang_isVolatileQualifiedType(type));
     return 1;
 }
 
-static int l_type_clang_getResultType(lua_State *L)
+static int ltype_clang_getResultType(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     olua_pushCXType(L, clang_getResultType(type));
     return 1;
 }
 
-static int l_type_clang_argTypes(lua_State *L)
+static int ltype_clang_getArgTypes(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     int total = clang_getNumArgTypes(type);
@@ -147,7 +186,7 @@ static int l_type_clang_argTypes(lua_State *L)
     return 1;
 }
 
-static int l_type_clang_Type_getNumTemplateArguments(lua_State *L)
+static int ltype_clang_Type_getTemplateArgumentTypes(lua_State *L)
 {
     CXType type = olua_toCXType(L, 1);
     int total = clang_Type_getNumTemplateArguments(type);
@@ -159,23 +198,31 @@ static int l_type_clang_Type_getNumTemplateArguments(lua_State *L)
     return 1;
 }
 
+static int ltype_clang_Type_getClassType(lua_State *L)
+{
+    CXType type = olua_toCXType(L, 1);
+    olua_pushCXType(L, clang_Type_getClassType(type));
+    return 1;
+}
+
 static int luaopen_clang_type(lua_State *L)
 {
     oluacls_class(L, CLANG_TYPE, NULL);
-    oluacls_func(L, "__eq", l_type_eq);
-    oluacls_func(L, "name", l_type_name);
-    oluacls_func(L, "kind", l_type_kind);
-    oluacls_func(L, "canonicalType", l_type_canonicalType);
-    oluacls_func(L, "isPod", l_type_isPod);
-    oluacls_func(L, "declaration", l_type_declaration);
-    oluacls_func(L, "pointeeType", l_type_pointeeType);
-    oluacls_func(L, "typedefName", l_type_clang_getTypedefName);
-    oluacls_func(L, "isConst", l_type_isConstQualifiedType);
-    oluacls_func(L, "isRestrict", l_type_isRestrictQualifiedType);
-    oluacls_func(L, "isVolatile", l_type_isVolatileQualifiedType);
-    oluacls_func(L, "resultType", l_type_clang_getResultType);
-    oluacls_func(L, "argTypes", l_type_clang_argTypes);
-    oluacls_func(L, "templateArgumentAsType", l_type_clang_Type_getNumTemplateArguments);
+    oluacls_func(L, "__eq", ltype_clang_equalTypes);
+    oluacls_prop(L, "name", ltype_clang_getTypeSpelling, NULL);
+    oluacls_prop(L, "kind", ltype_clang_getTypeKindSpelling, NULL);
+    oluacls_prop(L, "canonicalType", ltype_clang_getCanonicalType, NULL);
+    oluacls_prop(L, "isPod", ltype_clang_isPODType, NULL);
+    oluacls_prop(L, "declaration", ltype_clang_getTypeDeclaration, NULL);
+    oluacls_prop(L, "pointeeType", ltype_clang_getPointeeType, NULL);
+    oluacls_prop(L, "typedefName", ltype_clang_getTypedefName, NULL);
+    oluacls_prop(L, "isConst", ltype_clang_isConstQualifiedType, NULL);
+    oluacls_prop(L, "isRestrict", ltype_clang_isRestrictQualifiedType, NULL);
+    oluacls_prop(L, "isVolatile", ltype_clang_isVolatileQualifiedType, NULL);
+    oluacls_prop(L, "resultType", ltype_clang_getResultType, NULL);
+    oluacls_prop(L, "argTypes", ltype_clang_getArgTypes, NULL);
+    oluacls_prop(L, "templateArgTypes", ltype_clang_Type_getTemplateArgumentTypes, NULL);
+    oluacls_prop(L, "classType", ltype_clang_Type_getClassType, NULL);
     return 1;
 }
 
@@ -448,14 +495,14 @@ static const char *toCursorKindString(enum CXCursorKind kind) {
     }
 }
 
-static int l_cursor_name(lua_State *L)
+static int lcursor_clang_getCursorSpelling(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     olua_pushCXString(L, clang_getCursorSpelling(cur));
     return 1;
 }
 
-static int l_cursor_eq(lua_State *L)
+static int lcursor_clang_equalCursors(lua_State *L)
 {
     CXCursor cur1 = olua_toCXCursor(L, 1);
     CXCursor cur2 = olua_toCXCursor(L, 2);
@@ -463,14 +510,14 @@ static int l_cursor_eq(lua_State *L)
     return 1;
 }
 
-static int l_cursor_kind(lua_State *L)
+static int lcursor_clang_getCursorKind(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushstring(L, toCursorKindString(clang_getCursorKind(cur)));
     return 1;
 }
 
-static int l_cursor_type(lua_State *L)
+static int lcursor_clang_getCursorType(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     CXType type = clang_getCursorType(cur);
@@ -482,14 +529,14 @@ static int l_cursor_type(lua_State *L)
     return 1;
 }
 
-static int l_cursor_displayName(lua_State *L)
+static int lcursor_clang_getCursorDisplayName(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     olua_pushCXString(L, clang_getCursorDisplayName(cur));
     return 1;
 }
 
-static int l_cursor_access(lua_State *L)
+static int lcursor_clang_getCXXAccessSpecifier(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     enum CX_CXXAccessSpecifier spec = clang_getCXXAccessSpecifier(cur);
@@ -502,7 +549,7 @@ static int l_cursor_access(lua_State *L)
     return 1;
 }
 
-static int l_cursor_location(lua_State *L)
+static int lcursor_clang_getSpellingLocation(lua_State *L)
 {
     CXFile file;
     unsigned int line, col;
@@ -523,21 +570,21 @@ static int l_cursor_location(lua_State *L)
     return 5;
 }
 
-static int l_cursor_usr(lua_State *L)
+static int lcursor_clang_getCursorUSR(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     olua_pushCXString(L, clang_getCursorUSR(cur));
     return 1;
 }
 
-static int l_cursor_parent(lua_State *L)
+static int lcursor_clang_getCursorSemanticParent(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     olua_pushCXCursor(L, clang_getCursorSemanticParent(cur));
     return 1;
 }
 
-static int l_cursor_arguments(lua_State *L)
+static int lcursor_clang_Cursor_getArguments(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     unsigned int nargs = clang_Cursor_getNumArguments(cur);
@@ -549,130 +596,130 @@ static int l_cursor_arguments(lua_State *L)
     return 1;
 }
 
-static int l_cursor_referenced(lua_State *L)
+static int lcursor_clang_getCursorReferenced(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     olua_pushCXCursor(L, clang_getCursorReferenced(cur));
     return 1;
 }
 
-static int l_cursor_definition(lua_State *L)
+static int lcursor_clang_getCursorDefinition(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     olua_pushCXCursor(L, clang_getCursorDefinition(cur));
     return 1;
 }
 
-static int l_cursor_clang_isDeclaration(lua_State *L)
+static int lcursor_clang_isDeclaration(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_isDeclaration(clang_getCursorKind(cur)));
     return 1;
 }
 
-static int l_cursor_clang_isInvalidDeclaration(lua_State *L)
+static int lcursor_clang_isInvalidDeclaration(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_isInvalidDeclaration(cur));
     return 1;
 }
 
-static int l_cursor_clang_isReference(lua_State *L)
+static int lcursor_clang_isReference(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_isReference(clang_getCursorKind(cur)));
     return 1;
 }
 
-static int l_cursor_clang_isExpression(lua_State *L)
+static int lcursor_clang_isExpression(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_isExpression(clang_getCursorKind(cur)));
     return 1;
 }
 
-static int l_cursor_clang_isStatement(lua_State *L)
+static int lcursor_clang_isStatement(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_isStatement(clang_getCursorKind(cur)));
     return 1;
 }
 
-static int l_cursor_clang_isAttribute(lua_State *L)
+static int lcursor_clang_isAttribute(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_isAttribute(clang_getCursorKind(cur)));
     return 1;
 }
 
-static int l_cursor_isStatic(lua_State *L)
+static int lcursor_clang_CXXMethod_isStatic(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_CXXMethod_isStatic(cur));
     return 1;
 }
 
-static int l_cursor_isVirtual(lua_State *L)
+static int lcursor_clang_CXXMethod_isVirtual(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_CXXMethod_isVirtual(cur));
     return 1;
 }
 
-static int l_cursor_isPureVirtual(lua_State *L)
+static int lcursor_clang_CXXMethod_isPureVirtual(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_CXXMethod_isPureVirtual(cur));
     return 1;
 }
 
-static int l_cursor_isAbstract(lua_State *L)
+static int lcursor_clang_CXXRecord_isAbstract(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_CXXRecord_isAbstract(cur));
     return 1;
 }
 
-static int l_cursor_isConstMethod(lua_State *L)
+static int lcursor_clang_CXXMethod_isConst(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_CXXMethod_isConst(cur));
     return 1;
 }
 
-static int l_cursor_resultType(lua_State *L)
+static int lcursor_clang_getCursorResultType(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     olua_pushCXType(L, clang_getCursorResultType(cur));
     return 1;
 }
 
-static int l_cursor_isConvertingConstructor(lua_State *L)
+static int lcursor_clang_CXXConstructor_isConvertingConstructor(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_CXXConstructor_isConvertingConstructor(cur));
     return 1;
 }
 
-static int l_cursor_isCopyConstructor(lua_State *L) {
+static int lcursor_clang_CXXConstructor_isCopyConstructor(lua_State *L) {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_CXXConstructor_isCopyConstructor(cur));
     return 1;
 }
 
-static int l_cursor_isDefaultConstructor(lua_State *L) {
+static int lcursor_clang_CXXConstructor_isDefaultConstructor(lua_State *L) {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_CXXConstructor_isDefaultConstructor(cur));
     return 1;
 }
 
-static int l_cursor_isMoveConstructor(lua_State *L) {
+static int lcursor_clang_CXXConstructor_isMoveConstructor(lua_State *L) {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_CXXConstructor_isMoveConstructor(cur));
     return 1;
 }
 
-static int l_cursor_clang_Cursor_isVariadic(lua_State *L) {
+static int lcursor_clang_Cursor_isVariadic(lua_State *L) {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_pushboolean(L, clang_Cursor_isVariadic(cur));
     return 1;
@@ -686,14 +733,14 @@ enum CXChildVisitResult childrenVisitor(CXCursor cursor, CXCursor parent, CXClie
     return CXChildVisit_Continue;
 }
 
-static int l_cursor_clang_getTypedefDeclUnderlyingType(lua_State *L)
+static int lcursor_clang_getTypedefDeclUnderlyingType(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     olua_pushCXType(L, clang_getTypedefDeclUnderlyingType(cur));
     return 1;
 }
 
-static int l_cursor_children(lua_State *L)
+static int lcursor_clang_getChildren(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
     lua_createtable(L, 0, 0);
@@ -701,51 +748,80 @@ static int l_cursor_children(lua_State *L)
     return 1;
 }
 
-static int luaopen_clang_cursor(lua_State *L)
+static int lcursor_clang_Cursor_getTemplateArgumentTypes(lua_State *L)
 {
-    oluacls_class(L, CLANG_CURSOR, NULL);
-    oluacls_func(L, "__eq", l_cursor_eq);
-    oluacls_func(L, "name", l_cursor_name);
-    oluacls_func(L, "kind", l_cursor_kind);
-    oluacls_func(L, "type", l_cursor_type);
-    oluacls_func(L, "displayName", l_cursor_displayName);
-    oluacls_func(L, "access", l_cursor_access);
-    oluacls_func(L, "location", l_cursor_location);
-    oluacls_func(L, "usr", l_cursor_usr);
-    oluacls_func(L, "parent", l_cursor_parent);
-    oluacls_func(L, "arguments", l_cursor_arguments);
-    oluacls_func(L, "referenced", l_cursor_referenced);
-    oluacls_func(L, "definition", l_cursor_definition);
-    oluacls_func(L, "isDeclaration", l_cursor_clang_isDeclaration);
-    oluacls_func(L, "isInvalidDeclaration", l_cursor_clang_isInvalidDeclaration);
-    oluacls_func(L, "isReference", l_cursor_clang_isReference);
-    oluacls_func(L, "isExpression", l_cursor_clang_isExpression);
-    oluacls_func(L, "isStatement", l_cursor_clang_isStatement);
-    oluacls_func(L, "isAttribute", l_cursor_clang_isAttribute);
-    oluacls_func(L, "isStatic", l_cursor_isStatic);
-    oluacls_func(L, "isVirtual", l_cursor_isVirtual);
-    oluacls_func(L, "isPureVirtual", l_cursor_isPureVirtual);
-    oluacls_func(L, "isAbstract", l_cursor_isAbstract);
-    oluacls_func(L, "isConstMethod", l_cursor_isConstMethod);
-    oluacls_func(L, "resultType", l_cursor_resultType);
-    oluacls_func(L, "isConvertingConstructor", l_cursor_isConvertingConstructor);
-    oluacls_func(L, "isCopyConstructor", l_cursor_isCopyConstructor);
-    oluacls_func(L, "isDefaultConstructor", l_cursor_isDefaultConstructor);
-    oluacls_func(L, "isMoveConstructor", l_cursor_isMoveConstructor);
-    oluacls_func(L, "isVariadic", l_cursor_clang_Cursor_isVariadic);
-    oluacls_func(L, "underlyingType", l_cursor_clang_getTypedefDeclUnderlyingType);
-    oluacls_func(L, "children", l_cursor_children);
+    CXCursor cur = olua_toCXCursor(L, 1);
+    int total = clang_Cursor_getNumTemplateArguments(cur);
+    lua_createtable(L, total, 0);
+    for (int i = 0; i < total; i++) {
+        olua_pushCXType(L, clang_Cursor_getTemplateArgumentType(cur, i));
+        olua_rawseti(L, -2, i + 1);
+    }
     return 1;
 }
 
-static int l_tu_cursor(lua_State *L)
+static int lcursor_clang_getCursorPrettyPrinted(lua_State *L)
+{
+    CXCursor cur = olua_toCXCursor(L, 1);
+    olua_pushCXString(L, clang_getCursorPrettyPrinted(cur, nullptr));
+    return 1;
+}
+
+static int lcursor_clang_getCanonicalCursor(lua_State *L)
+{
+    CXCursor cur = olua_toCXCursor(L, 1);
+    olua_pushCXCursor(L, clang_getCanonicalCursor(cur));
+    return 1;
+}
+
+static int luaopen_clang_cursor(lua_State *L)
+{
+    oluacls_class(L, CLANG_CURSOR, NULL);
+    oluacls_func(L, "__eq", lcursor_clang_equalCursors);
+    oluacls_prop(L, "name", lcursor_clang_getCursorSpelling, NULL);
+    oluacls_prop(L, "kind", lcursor_clang_getCursorKind, NULL);
+    oluacls_prop(L, "type", lcursor_clang_getCursorType, NULL);
+    oluacls_prop(L, "displayName", lcursor_clang_getCursorDisplayName, NULL);
+    oluacls_prop(L, "access", lcursor_clang_getCXXAccessSpecifier, NULL);
+    oluacls_func(L, "location", lcursor_clang_getSpellingLocation);
+    oluacls_prop(L, "usr", lcursor_clang_getCursorUSR, NULL);
+    oluacls_prop(L, "parent", lcursor_clang_getCursorSemanticParent, NULL);
+    oluacls_prop(L, "arguments", lcursor_clang_Cursor_getArguments, NULL);
+    oluacls_prop(L, "referenced", lcursor_clang_getCursorReferenced, NULL);
+    oluacls_prop(L, "definition", lcursor_clang_getCursorDefinition, NULL);
+    oluacls_prop(L, "isDeclaration", lcursor_clang_isDeclaration, NULL);
+    oluacls_prop(L, "isInvalidDeclaration", lcursor_clang_isInvalidDeclaration, NULL);
+    oluacls_prop(L, "isReference", lcursor_clang_isReference, NULL);
+    oluacls_prop(L, "isExpression", lcursor_clang_isExpression, NULL);
+    oluacls_prop(L, "isStatement", lcursor_clang_isStatement, NULL);
+    oluacls_prop(L, "isAttribute", lcursor_clang_isAttribute, NULL);
+    oluacls_prop(L, "isStatic", lcursor_clang_CXXMethod_isStatic, NULL);
+    oluacls_prop(L, "isVirtual", lcursor_clang_CXXMethod_isVirtual, NULL);
+    oluacls_prop(L, "isPureVirtual", lcursor_clang_CXXMethod_isPureVirtual, NULL);
+    oluacls_prop(L, "isAbstract", lcursor_clang_CXXRecord_isAbstract, NULL);
+    oluacls_prop(L, "isConst", lcursor_clang_CXXMethod_isConst, NULL);
+    oluacls_prop(L, "resultType", lcursor_clang_getCursorResultType, NULL);
+    oluacls_prop(L, "isConvertingConstructor", lcursor_clang_CXXConstructor_isConvertingConstructor, NULL);
+    oluacls_prop(L, "isCopyConstructor", lcursor_clang_CXXConstructor_isCopyConstructor, NULL);
+    oluacls_prop(L, "isDefaultConstructor", lcursor_clang_CXXConstructor_isDefaultConstructor, NULL);
+    oluacls_prop(L, "isMoveConstructor", lcursor_clang_CXXConstructor_isMoveConstructor, NULL);
+    oluacls_prop(L, "isVariadic", lcursor_clang_Cursor_isVariadic, NULL);
+    oluacls_prop(L, "underlyingType", lcursor_clang_getTypedefDeclUnderlyingType, NULL);
+    oluacls_prop(L, "children", lcursor_clang_getChildren, NULL);
+    oluacls_prop(L, "templateArgTypes", lcursor_clang_Cursor_getTemplateArgumentTypes, NULL);
+    oluacls_prop(L, "prettyPrinted", lcursor_clang_getCursorPrettyPrinted, NULL);
+    oluacls_prop(L, "canonical", lcursor_clang_getCanonicalCursor, NULL);
+    return 1;
+}
+
+static int ltu_clang_getTranslationUnitCursor(lua_State *L)
 {
     CXTranslationUnit tu = olua_toCXTranslationUnit(L, 1);
     olua_pushCXCursor(L, clang_getTranslationUnitCursor(tu));
     return 1;
 }
 
-static int l_tu_file(lua_State *L)
+static int ltu_clang_getFile(lua_State *L)
 {
     CXTranslationUnit tu = olua_toCXTranslationUnit(L, 1);
     const char *file = olua_checkstring(L, 2);
@@ -755,7 +831,7 @@ static int l_tu_file(lua_State *L)
     return 2;
 }
 
-static int l_tu_diagnostics(lua_State *L) {
+static int ltu_clang_getDiagnostic(lua_State *L) {
     CXTranslationUnit tu = olua_toCXTranslationUnit(L, 1);
     int nDiag = clang_getNumDiagnostics(tu);
     lua_createtable(L, nDiag, 0);
@@ -766,7 +842,7 @@ static int l_tu_diagnostics(lua_State *L) {
     return 1;
 }
 
-static int l_tu_gc(lua_State *L)
+static int ltu_clang_disposeTranslationUnit(lua_State *L)
 {
     CXTranslationUnit tu = olua_toCXTranslationUnit(L, 1);
     clang_disposeTranslationUnit(tu);
@@ -776,14 +852,14 @@ static int l_tu_gc(lua_State *L)
 static int luaopen_clang_tu(lua_State *L)
 {
     oluacls_class(L, CLANG_TU, NULL);
-    oluacls_func(L, "cursor", l_tu_cursor);
-    oluacls_func(L, "file", l_tu_file);
-    oluacls_func(L, "diagnostics", l_tu_diagnostics);
-    oluacls_func(L, "__gc", l_tu_gc);
+    oluacls_func(L, "__gc", ltu_clang_disposeTranslationUnit);
+    oluacls_func(L, "cursor", ltu_clang_getTranslationUnitCursor);
+    oluacls_func(L, "file", ltu_clang_getFile);
+    oluacls_func(L, "diagnostics", ltu_clang_getDiagnostic);
     return 1;
 }
 
-static int l_index_load(lua_State *L)
+static int lindex_clang_createTranslationUnit(lua_State *L)
 {
     CXIndex idx = olua_toCXIndex(L, 1);
     const char *ast_filename = olua_checkstring(L, 2);
@@ -798,7 +874,7 @@ static int l_index_load(lua_State *L)
     return 1;
 }
 
-static int l_index_parse(lua_State *L)
+static int lindex_clang_parseTranslationUnit(lua_State *L)
 {
     CXIndex idx = olua_toCXIndex(L, 1);
     const char *source_filename = olua_optstring(L, 2, NULL);
@@ -821,7 +897,7 @@ static int l_index_parse(lua_State *L)
     return 1;
 }
 
-static int l_index_gc(lua_State *L)
+static int lindex_clang_disposeIndex(lua_State *L)
 {
     CXIndex idx = olua_toCXIndex(L, 1);
     clang_disposeIndex(idx);
@@ -831,9 +907,9 @@ static int l_index_gc(lua_State *L)
 static int luaopen_clang_index(lua_State *L)
 {
     oluacls_class(L, CLANG_INDEX, NULL);
-    oluacls_func(L, "load", l_index_load);
-    oluacls_func(L, "parse", l_index_parse);
-    oluacls_func(L, "__gc", l_index_gc);
+    oluacls_func(L, "__gc", lindex_clang_disposeIndex);
+    oluacls_func(L, "create", lindex_clang_createTranslationUnit);
+    oluacls_func(L, "parse", lindex_clang_parseTranslationUnit);
     
     return 1;
 }
