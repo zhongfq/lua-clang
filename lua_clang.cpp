@@ -13,7 +13,7 @@
 
 static int index_error(lua_State *L)
 {
-    const char *cls = olua_checkstring(L, lua_upvalueindex(1));
+    const char *cls = olua_checkfieldstring(L, 1, "classname");
     const char *key = olua_tostring(L, 2);
     luaL_error(L, "index '%s' of '%s' is not available", key, cls);
     return 0;
@@ -21,31 +21,10 @@ static int index_error(lua_State *L)
 
 static int newindex_error(lua_State *L)
 {
-    const char *cls = olua_checkstring(L, lua_upvalueindex(1));
+    const char *cls = olua_checkfieldstring(L, 1, "classname");
     const char *key = olua_tostring(L, 2);
     luaL_error(L, "newindex '%s' of '%s' is not available", key, cls);
     return 0;
-}
-
-static void set_index_notfound_error(lua_State *L, int idx, const char *cls)
-{
-    int top = lua_gettop(L);
-    idx = lua_absindex(L, idx);
-    lua_pushfstring(L, "%s.notfound", cls);
-    if (olua_getmetatable(L, olua_tostring(L, -1)) != LUA_TTABLE) {
-        lua_pop(L, 1);
-        luaL_newmetatable(L, olua_tostring(L, -1));
-        lua_pushstring(L, cls);
-        lua_pushcclosure(L, index_error, 1);
-        lua_setfield(L, -2, "__index");
-        lua_pushstring(L, cls);
-        lua_pushcclosure(L, newindex_error, 1);
-        lua_setfield(L, -2, "__newindex");
-        lua_pushvalue(L, -1);
-        lua_setmetatable(L, -2);
-    }
-    lua_setuservalue(L, idx);
-    lua_settop(L, top);
 }
 
 static void olua_pushCXCursor(lua_State *L, CXCursor cur)
@@ -55,7 +34,6 @@ static void olua_pushCXCursor(lua_State *L, CXCursor cur)
     } else {
         *(CXCursor *)lua_newuserdata(L, sizeof(CXCursor)) = cur;
         olua_setmetatable(L, CLANG_CURSOR);
-        set_index_notfound_error(L, -1, CLANG_CURSOR);
     }
 }
 
@@ -66,7 +44,6 @@ static void olua_pushCXType(lua_State *L, CXType type)
     } else {
         *(CXType *)lua_newuserdata(L, sizeof(CXType)) = type;
         olua_setmetatable(L, CLANG_TYPE);
-        set_index_notfound_error(L, -1, CLANG_TYPE);
     }
 }
 
@@ -208,6 +185,8 @@ static int ltype_clang_Type_getClassType(lua_State *L)
 static int luaopen_clang_type(lua_State *L)
 {
     oluacls_class(L, CLANG_TYPE, NULL);
+    oluacls_func(L, "__index", index_error);
+    oluacls_func(L, "__newindex", newindex_error);
     oluacls_func(L, "__eq", ltype_clang_equalTypes);
     oluacls_prop(L, "name", ltype_clang_getTypeSpelling, NULL);
     oluacls_prop(L, "kind", ltype_clang_getTypeKindSpelling, NULL);
@@ -777,6 +756,8 @@ static int lcursor_clang_getCanonicalCursor(lua_State *L)
 static int luaopen_clang_cursor(lua_State *L)
 {
     oluacls_class(L, CLANG_CURSOR, NULL);
+    oluacls_func(L, "__index", index_error);
+    oluacls_func(L, "__newindex", newindex_error);
     oluacls_func(L, "__eq", lcursor_clang_equalCursors);
     oluacls_prop(L, "name", lcursor_clang_getCursorSpelling, NULL);
     oluacls_prop(L, "kind", lcursor_clang_getCursorKind, NULL);
