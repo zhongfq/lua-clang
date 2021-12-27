@@ -58,11 +58,16 @@ static void olua_pushCXString(lua_State *L, CXString s)
 }
 
 static void olua_pushDiagnostic(lua_State *L, CXDiagnostic diag) {
+    static const char *const serverity[] = {"ignored", "note", "warning", "error", "fatal"};
     lua_createtable(L, 0, 0);
+    olua_pushCXString(L, clang_getDiagnosticSpelling(diag));
+    lua_setfield(L, -2, "name");
     olua_pushCXString(L, clang_getDiagnosticCategoryText(diag));
     lua_setfield(L, -2, "category");
     olua_pushCXString(L, clang_formatDiagnostic(diag, clang_defaultDiagnosticDisplayOptions()));
     lua_setfield(L, -2, "text");
+    lua_pushstring(L, serverity[clang_getDiagnosticSeverity(diag)]);
+    lua_setfield(L, -2, "severity");
     clang_disposeDiagnostic(diag);
 }
 
