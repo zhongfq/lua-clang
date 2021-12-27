@@ -32,4 +32,4 @@ build clang for lua
     cmake --build . --config release --target liblua
     ```
 
-how to use clang see [cocos-lua bindings geneator](https://github.com/zhongfq/cocos-lua/tree/v4/tools/lua-bindings).
+how to use clang see [cocos-lua bindings geneator](https://github.com/zhongfq/cocos-lua/tree/main/tools/lua-bindings).
