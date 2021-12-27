@@ -1,6 +1,8 @@
 #include "clang-c/Index.h"
 #include "olua/olua.h"
 
+#define LUACLANG_VERSION "1.0"
+
 #define CLANG_INDEX     "clang.CXIndex"
 #define CLANG_TU        "clang.CXTranslationUnit"
 #define CLANG_CURSOR    "clang.CXCursor"
@@ -928,6 +930,7 @@ EXPORT_LUACLANG int luaopen_clang(lua_State *L)
     
     oluacls_class(L, "clang", NULL);
     oluacls_func(L, "createIndex", l_clang_createIndex);
+    oluacls_const_string(L, "version", LUACLANG_VERSION);
     
     return 1;
 }
