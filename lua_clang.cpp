@@ -915,13 +915,7 @@ static int l_clang_createIndex(lua_State *L)
 extern "C" {
 #endif
 
-#ifdef _WIN32
-#define EXPORT_LUACLANG __declspec(dllexport)
-#else
-#define EXPORT_LUACLANG extern
-#endif
-
-EXPORT_LUACLANG int luaopen_clang(lua_State *L)
+OLUA_LIB int luaopen_clang(lua_State *L)
 {
     olua_require(L, CLANG_TYPE, luaopen_clang_type);
     olua_require(L, CLANG_CURSOR, luaopen_clang_cursor);

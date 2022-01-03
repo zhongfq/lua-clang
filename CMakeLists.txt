@@ -16,6 +16,10 @@ if(WIN32)
     set(ENABLE_STATIC STATIC CACHE UNINITIALIZED "")
 endif()
 
+if(APPLE)
+    set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
+endif()
+
 add_subdirectory(llvm-project/llvm)
 
 add_library(luaclang MODULE lua_clang.cpp olua/olua.c)
