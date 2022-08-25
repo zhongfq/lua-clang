@@ -13,22 +13,6 @@
 #define olua_toCXCursor(L, idx)             (*(CXCursor *)luaL_checkudata(L, idx, CLANG_CURSOR))
 #define olua_toCXType(L, idx)               (*(CXType *)luaL_checkudata(L, idx, CLANG_TYPE))
 
-static int index_error(lua_State *L)
-{
-    const char *cls = olua_checkfieldstring(L, 1, "classname");
-    const char *key = olua_tostring(L, 2);
-    luaL_error(L, "index '%s' of '%s' is not available", key, cls);
-    return 0;
-}
-
-static int newindex_error(lua_State *L)
-{
-    const char *cls = olua_checkfieldstring(L, 1, "classname");
-    const char *key = olua_tostring(L, 2);
-    luaL_error(L, "newindex '%s' of '%s' is not available", key, cls);
-    return 0;
-}
-
 static void olua_pushCXCursor(lua_State *L, CXCursor cur)
 {
     if (clang_Cursor_isNull(cur)) {
@@ -192,8 +176,8 @@ static int ltype_clang_Type_getClassType(lua_State *L)
 static int luaopen_clang_type(lua_State *L)
 {
     oluacls_class(L, CLANG_TYPE, NULL);
-    oluacls_func(L, "__index", index_error);
-    oluacls_func(L, "__newindex", newindex_error);
+    oluacls_func(L, "__index", olua_indexerror);
+    oluacls_func(L, "__newindex", olua_newindexerror);
     oluacls_func(L, "__eq", ltype_clang_equalTypes);
     oluacls_prop(L, "name", ltype_clang_getTypeSpelling, NULL);
     oluacls_prop(L, "kind", ltype_clang_getTypeKindSpelling, NULL);
@@ -763,8 +747,8 @@ static int lcursor_clang_getCanonicalCursor(lua_State *L)
 static int luaopen_clang_cursor(lua_State *L)
 {
     oluacls_class(L, CLANG_CURSOR, NULL);
-    oluacls_func(L, "__index", index_error);
-    oluacls_func(L, "__newindex", newindex_error);
+    oluacls_func(L, "__index", olua_indexerror);
+    oluacls_func(L, "__newindex", olua_newindexerror);
     oluacls_func(L, "__eq", lcursor_clang_equalCursors);
     oluacls_prop(L, "name", lcursor_clang_getCursorSpelling, NULL);
     oluacls_prop(L, "kind", lcursor_clang_getCursorKind, NULL);
@@ -853,7 +837,7 @@ static int lindex_clang_createTranslationUnit(lua_State *L)
     const char *ast_filename = olua_checkstring(L, 2);
     CXTranslationUnit tu = clang_createTranslationUnit(idx, ast_filename);
     if (tu) {
-        olua_pushobj(L, tu, CLANG_TU);
+        olua_pushobj(L, (void *)tu, CLANG_TU);
     } else {
         lua_pushnil(L);
         lua_pushfstring(L, "failed to open ast file: %s", ast_filename);
@@ -876,7 +860,7 @@ static int lindex_clang_parseTranslationUnit(lua_State *L)
     }
     CXTranslationUnit tu = clang_parseTranslationUnit(idx, source_filename, args, nargs, NULL, 0, options);
     if (tu) {
-        olua_pushobj(L, tu, CLANG_TU);
+        olua_pushobj(L, (void *)tu, CLANG_TU);
     } else {
         lua_pushnil(L);
         lua_pushfstring(L, "failed to parse file: %s", source_filename);
