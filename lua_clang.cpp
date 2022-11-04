@@ -580,6 +580,13 @@ static int lcursor_clang_getCursorDefinition(lua_State *L)
     return 1;
 }
 
+static int lcursor_clang_getSpecializedCursorTemplate(lua_State *L)
+{
+    CXCursor cur = olua_toCXCursor(L, 1);
+    olua_pushCXCursor(L, clang_getSpecializedCursorTemplate(cur));
+    return 1;
+}
+
 static int lcursor_clang_isDeclaration(lua_State *L)
 {
     CXCursor cur = olua_toCXCursor(L, 1);
@@ -761,6 +768,7 @@ static int luaopen_clang_cursor(lua_State *L)
     oluacls_prop(L, "arguments", lcursor_clang_Cursor_getArguments, NULL);
     oluacls_prop(L, "referenced", lcursor_clang_getCursorReferenced, NULL);
     oluacls_prop(L, "definition", lcursor_clang_getCursorDefinition, NULL);
+    oluacls_prop(L, "specializedTemplate", lcursor_clang_getSpecializedCursorTemplate, NULL);
     oluacls_prop(L, "isDeclaration", lcursor_clang_isDeclaration, NULL);
     oluacls_prop(L, "isInvalidDeclaration", lcursor_clang_isInvalidDeclaration, NULL);
     oluacls_prop(L, "isReference", lcursor_clang_isReference, NULL);
