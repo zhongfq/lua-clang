@@ -50,7 +50,7 @@ target_include_directories(luaclang53
 if(APPLE)
     target_link_options(luaclang53 PUBLIC -bundle -undefined dynamic_lookup)
 elseif(WIN32)
-    target_link_libraries(luaclang53 liblua)
+    target_link_libraries(luaclang53 liblua53)
     set_target_properties(libclang_static PROPERTIES OUTPUT_NAME libclang_static)
 endif()
 
@@ -76,7 +76,7 @@ target_include_directories(luaclang54
 if(APPLE)
     target_link_options(luaclang54 PUBLIC -bundle -undefined dynamic_lookup)
 elseif(WIN32)
-    target_link_libraries(luaclang54 liblua)
+    target_link_libraries(luaclang54 liblua54)
     set_target_properties(libclang_static PROPERTIES OUTPUT_NAME libclang_static)
 endif()
 
