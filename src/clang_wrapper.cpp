@@ -1163,7 +1163,7 @@ std::shared_ptr<TranslationUnit> Index::parse(const std::string &path, const std
     CXTranslationUnit tu = clang_parseTranslationUnit(_value, path.c_str(), cargs, (int)args.size(), NULL, 0, options);
     free(cargs);
     if (tu) {
-        return std::make_shared<TranslationUnit>(tu);
+        return std::make_shared<TranslationUnit>(tu, true);
     } else {
         printf("failed to parse file: %s", path.c_str());
         return std::shared_ptr<TranslationUnit>();

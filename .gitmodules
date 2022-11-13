@@ -4,10 +4,10 @@
 [submodule "llvm-project"]
 	path = llvm-project
 	url = git@github.com:llvm/llvm-project.git
-[submodule "lua"]
-	path = lua
-	url = git@github.com:zhongfq/lua.git
 [submodule "lua53"]
 	path = lua53
 	url = git@github.com:zhongfq/lua.git
 	branch = v5.3
+[submodule "lua54"]
+	path = lua54
+	url = git@github.com:zhongfq/lua.git

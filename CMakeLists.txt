@@ -22,8 +22,7 @@ endif()
 
 add_subdirectory(llvm-project/llvm)
 
-add_library(luaclang MODULE 
-    # lua_clang.cpp
+set(SRC
     src/lua_clang.h
     src/lua_clang.cpp
     src/clang_wrapper.h
@@ -31,38 +30,55 @@ add_library(luaclang MODULE
     olua/olua.h
     olua/olua.c
 )
-set_target_properties(luaclang PROPERTIES 
+
+# luaclang53
+add_subdirectory(lua53)
+add_library(luaclang53 MODULE ${SRC})
+set_target_properties(luaclang53 PROPERTIES 
     PREFIX ""
-    OUTPUT_NAME clang
+    OUTPUT_NAME clang53
 )
-target_include_directories(luaclang
+target_include_directories(luaclang53
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/llvm-project/clang/include
 )
-
-if(LUA STREQUAL "lua54")
-    add_subdirectory(lua)
-    target_include_directories(luaclang
-      PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/lua
-    )
-elseif(LUA STREQUAL "lua53")
-    add_subdirectory(lua53)
-    target_include_directories(luaclang
-      PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/lua53
-    )
-else()
-    message(FATAL_ERROR "only support lua53 or lua54")
-endif()
-
+target_include_directories(luaclang53
+  PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/lua53
+)
 if(APPLE)
-    target_link_options(luaclang PUBLIC -bundle -undefined dynamic_lookup)
+    target_link_options(luaclang53 PUBLIC -bundle -undefined dynamic_lookup)
 elseif(WIN32)
-    target_link_libraries(luaclang liblua)
+    target_link_libraries(luaclang53 liblua)
     set_target_properties(libclang_static PROPERTIES OUTPUT_NAME libclang_static)
 endif()
 
-target_link_libraries(luaclang libclang_static)
+target_link_libraries(luaclang53 libclang_static)
+
+# luaclang54
+add_subdirectory(lua54)
+add_library(luaclang54 MODULE ${SRC})
+set_target_properties(luaclang54 PROPERTIES 
+    PREFIX ""
+    OUTPUT_NAME clang54
+)
+target_include_directories(luaclang54
+  PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/llvm-project/clang/include
+)
+target_include_directories(luaclang54
+  PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/lua54
+)
+
+if(APPLE)
+    target_link_options(luaclang54 PUBLIC -bundle -undefined dynamic_lookup)
+elseif(WIN32)
+    target_link_libraries(luaclang54 liblua)
+    set_target_properties(libclang_static PROPERTIES OUTPUT_NAME libclang_static)
+endif()
+
+target_link_libraries(luaclang54 libclang_static)
 
