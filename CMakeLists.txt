@@ -22,23 +22,35 @@ endif()
 
 add_subdirectory(llvm-project/llvm)
 
-add_library(luaclang MODULE lua_clang.cpp olua/olua.c)
+add_library(luaclang MODULE 
+    # lua_clang.cpp
+    src/lua_clang.h
+    src/lua_clang.cpp
+    src/clang_wrapper.h
+    src/clang_wrapper.cpp
+    olua/olua.h
+    olua/olua.c
+)
 set_target_properties(luaclang PROPERTIES 
     PREFIX ""
     OUTPUT_NAME clang
 )
-target_include_directories(luaclang PUBLIC
+target_include_directories(luaclang
+  PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/llvm-project/clang/include
 )
 
 if(LUA STREQUAL "lua54")
     add_subdirectory(lua)
-    target_include_directories(luaclang PUBLIC
+    target_include_directories(luaclang
+      PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/lua
     )
 elseif(LUA STREQUAL "lua53")
     add_subdirectory(lua53)
-    target_include_directories(luaclang PUBLIC
+    target_include_directories(luaclang
+      PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/lua53
     )
 else()
