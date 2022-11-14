@@ -1,0 +1,28 @@
+unused = false
+new_globals = {
+    "OLUA_AUTO_BUILD",
+    "OLUA_AUTO_GEN_PROP",
+    "OLUA_AUTO_EXPORT_PARENT",
+    "OLUA_ENABLE_WITH_UNDERSCORE",
+    "OLUA_ENABLE_DEPRECATED",
+    "autoconf",
+    "chunk",
+    "clang",
+    "dofile",
+    "exclude",
+    "export",
+    "headers",
+    "include",
+    "ipairs",
+    "luacls",
+    "luaopen",
+    "macro",
+    "olua",
+    "pairs",
+    "path",
+    "typeconf",
+    "typeconv",
+    "typedef",
+    "typeonly",
+}
+ignore = {"212", "611", "631"}
