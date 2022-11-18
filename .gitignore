@@ -1,3 +1,4 @@
 build
 release
 autobuild
+.vscode/c_cpp_properties.json

@@ -1057,7 +1057,7 @@ static int _clangwrapper_Diagnostic_shared_from_this(lua_State *L)
 
     olua_to_obj(L, 1, &self, "clangwrapper.Diagnostic");
 
-    // @copyfrom(std::enable_shared_from_this<clangwrapper::Diagnostic>) std::shared_ptr<clangwrapper::Diagnostic> shared_from_this()
+    // @copyfrom(std::enable_shared_from_this) std::shared_ptr<clangwrapper::Diagnostic> shared_from_this()
     std::shared_ptr<clangwrapper::Diagnostic> ret = self->shared_from_this();
     int num_ret = olua_push_obj(L, &ret, "clangwrapper.Diagnostic");
 
@@ -1255,7 +1255,7 @@ static int _clangwrapper_File_shared_from_this(lua_State *L)
 
     olua_to_obj(L, 1, &self, "clangwrapper.File");
 
-    // @copyfrom(std::enable_shared_from_this<clangwrapper::File>) std::shared_ptr<clangwrapper::File> shared_from_this()
+    // @copyfrom(std::enable_shared_from_this) std::shared_ptr<clangwrapper::File> shared_from_this()
     std::shared_ptr<clangwrapper::File> ret = self->shared_from_this();
     int num_ret = olua_push_obj(L, &ret, "clangwrapper.File");
 
@@ -1418,7 +1418,7 @@ static int _clangwrapper_Type_shared_from_this(lua_State *L)
 
     olua_to_obj(L, 1, &self, "clangwrapper.Type");
 
-    // @copyfrom(std::enable_shared_from_this<clangwrapper::Type>) std::shared_ptr<clangwrapper::Type> shared_from_this()
+    // @copyfrom(std::enable_shared_from_this) std::shared_ptr<clangwrapper::Type> shared_from_this()
     std::shared_ptr<clangwrapper::Type> ret = self->shared_from_this();
     int num_ret = olua_push_obj(L, &ret, "clangwrapper.Type");
 
@@ -2239,7 +2239,7 @@ static int _clangwrapper_Cursor_shared_from_this(lua_State *L)
 
     olua_to_obj(L, 1, &self, "clangwrapper.Cursor");
 
-    // @copyfrom(std::enable_shared_from_this<clangwrapper::Cursor>) std::shared_ptr<clangwrapper::Cursor> shared_from_this()
+    // @copyfrom(std::enable_shared_from_this) std::shared_ptr<clangwrapper::Cursor> shared_from_this()
     std::shared_ptr<clangwrapper::Cursor> ret = self->shared_from_this();
     int num_ret = olua_push_obj(L, &ret, "clangwrapper.Cursor");
 
@@ -4080,7 +4080,7 @@ static int _clangwrapper_Module_shared_from_this(lua_State *L)
 
     olua_to_obj(L, 1, &self, "clangwrapper.Module");
 
-    // @copyfrom(std::enable_shared_from_this<clangwrapper::Module>) std::shared_ptr<clangwrapper::Module> shared_from_this()
+    // @copyfrom(std::enable_shared_from_this) std::shared_ptr<clangwrapper::Module> shared_from_this()
     std::shared_ptr<clangwrapper::Module> ret = self->shared_from_this();
     int num_ret = olua_push_obj(L, &ret, "clangwrapper.Module");
 
@@ -4391,7 +4391,7 @@ static int _clangwrapper_TranslationUnit_shared_from_this(lua_State *L)
 
     olua_to_obj(L, 1, &self, "clangwrapper.TranslationUnit");
 
-    // @copyfrom(std::enable_shared_from_this<clangwrapper::TranslationUnit>) std::shared_ptr<clangwrapper::TranslationUnit> shared_from_this()
+    // @copyfrom(std::enable_shared_from_this) std::shared_ptr<clangwrapper::TranslationUnit> shared_from_this()
     std::shared_ptr<clangwrapper::TranslationUnit> ret = self->shared_from_this();
     int num_ret = olua_push_obj(L, &ret, "clangwrapper.TranslationUnit");
 
@@ -4729,7 +4729,7 @@ static int _clangwrapper_Index_shared_from_this(lua_State *L)
 
     olua_to_obj(L, 1, &self, "clangwrapper.Index");
 
-    // @copyfrom(std::enable_shared_from_this<clangwrapper::Index>) std::shared_ptr<clangwrapper::Index> shared_from_this()
+    // @copyfrom(std::enable_shared_from_this) std::shared_ptr<clangwrapper::Index> shared_from_this()
     std::shared_ptr<clangwrapper::Index> ret = self->shared_from_this();
     int num_ret = olua_push_obj(L, &ret, "clangwrapper.Index");
 
