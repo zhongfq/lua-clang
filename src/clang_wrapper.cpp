@@ -1198,10 +1198,10 @@ std::shared_ptr<Index> clang::createIndex(bool excludeDeclarationsFromPCH, bool 
 bool clang::debug = false;
 int clang::count = 0;
 
-int olua_push_clangwrapper_string(lua_State *L, const clangwrapper::string *value)
+int olua_push_string(lua_State *L, const clangwrapper::string &value)
 {
-    if (value && !value->isNull) {
-        lua_pushlstring(L, value->data.c_str(), value->data.size());
+    if (!value.isNull) {
+        lua_pushlstring(L, value.data.c_str(), value.data.size());
     } else {
         lua_pushnil(L);
     }

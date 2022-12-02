@@ -6,7 +6,7 @@
 
 #include <memory>
 
-#define LUACLANG_VERSION "2.0"
+#define LUACLANG_VERSION "2.1"
 
 namespace clangwrapper {
 
@@ -348,6 +348,6 @@ public:
 
 }
 
-int olua_push_clangwrapper_string(lua_State *L, const clangwrapper::string *value);
+int olua_push_string(lua_State *L, const clangwrapper::string &value);
 
 #endif

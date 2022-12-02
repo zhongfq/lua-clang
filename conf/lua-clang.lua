@@ -7,7 +7,7 @@ headers [[
 ]]
 
 luaopen [[
-if (olua_getclass(L, "clangwrapper.clang")) {
+    if (olua_getclass(L, olua_getluatype<clangwrapper::clang>(L))) {
     return 1;
 }
 ]]
@@ -33,10 +33,15 @@ local function typeenum(cls)
         .luaname(luaname)
 end
 
-typedef 'clangwrapper::string'
+luacls(function (cppcls)
+    return cppcls:gsub('clangwrapper::', 'clang.'):gsub('::', '.')
+end)
 
-typeconv 'clangwrapper::Cursor::SourceRange'
-typeconv 'clangwrapper::Cursor::SourceLocation'
+typedef 'clangwrapper::string'
+    .conv 'olua_$$_string'
+
+typeconf 'clangwrapper::Cursor::SourceRange'
+typeconf 'clangwrapper::Cursor::SourceLocation'
 
 typeenum 'clangwrapper::AvailabilityKind'
 typeenum 'clangwrapper::CallingConv'
