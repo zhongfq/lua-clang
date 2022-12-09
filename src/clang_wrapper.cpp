@@ -865,7 +865,7 @@ std::vector<string> Cursor::cxxManglings()
 {
     CXStringSet *set = clang_Cursor_getCXXManglings(_value);
     std::vector<string> strs;
-    for (int i = 0; i < set->Count; i++) {
+    for (int i = 0; i < (int)set->Count; i++) {
         strs.push_back(set->Strings[i]);
     }
     clang_disposeStringSet(set);

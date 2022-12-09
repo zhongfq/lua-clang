@@ -21,15 +21,14 @@ build clang for lua
     ```sh
     mkdir build && cd build
     cmake ../.. -DCMAKE_BUILD_TYPE=Release
-    # cmake ../.. -DCMAKE_BUILD_TYPE=Release -DLUA=lua53
-    cmake --build . --config Release --target luaclang
+    cmake --build . --config Release --target luaclang53
     ```
 
 - you also can build lua:
     ```sh
-    cmake --build . --config release --target lua
-    cmake --build . --config release --target luac
-    cmake --build . --config release --target liblua
+    cmake --build . --config release --target lua53
+    cmake --build . --config release --target luac53
+    cmake --build . --config release --target liblua53
     ```
 
 how to use clang see [cocos-lua bindings geneator](https://github.com/zhongfq/cocos-lua/tree/main/tools/lua-bindings).

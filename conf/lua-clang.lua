@@ -7,7 +7,7 @@ headers [[
 ]]
 
 luaopen [[
-    if (olua_getclass(L, olua_getluatype<clangwrapper::clang>(L))) {
+if (olua_getclass(L, olua_getluatype<clangwrapper::clang>(L))) {
     return 1;
 }
 ]]

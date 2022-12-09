@@ -20,6 +20,8 @@ if(APPLE)
     set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
 endif()
 
+include(lua.cmake)
+
 add_subdirectory(llvm-project/llvm)
 
 set(SRC
@@ -32,7 +34,6 @@ set(SRC
 )
 
 # luaclang53
-add_subdirectory(lua53)
 add_library(luaclang53 MODULE ${SRC})
 set_target_properties(luaclang53 PROPERTIES 
     PREFIX ""
@@ -42,10 +43,6 @@ target_include_directories(luaclang53
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/llvm-project/clang/include
-)
-target_include_directories(luaclang53
-  PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/lua53
 )
 if(APPLE)
     target_link_options(luaclang53 PUBLIC -bundle -undefined dynamic_lookup)
@@ -57,7 +54,6 @@ endif()
 target_link_libraries(luaclang53 libclang_static)
 
 # luaclang54
-add_subdirectory(lua54)
 add_library(luaclang54 MODULE ${SRC})
 set_target_properties(luaclang54 PROPERTIES 
     PREFIX ""
@@ -67,10 +63,6 @@ target_include_directories(luaclang54
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/llvm-project/clang/include
-)
-target_include_directories(luaclang54
-  PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/lua54
 )
 
 if(APPLE)

@@ -8,7 +8,8 @@ static int _clangwrapper_IndexError___gc(lua_State *L)
 {
     olua_startinvoke(L);
 
-    olua_postgc<clangwrapper::IndexError>(L, 1);
+    auto self = (clangwrapper::IndexError *)olua_toobj(L, 1, "clang.IndexError");
+    olua_postgc(L, self);
 
     olua_endinvoke(L);
 
@@ -76,7 +77,8 @@ static int _clangwrapper_Cursor_SourceRange___gc(lua_State *L)
 {
     olua_startinvoke(L);
 
-    olua_postgc<clangwrapper::Cursor::SourceRange>(L, 1);
+    auto self = (clangwrapper::Cursor::SourceRange *)olua_toobj(L, 1, "clang.Cursor.SourceRange");
+    olua_postgc(L, self);
 
     olua_endinvoke(L);
 
@@ -290,7 +292,8 @@ static int _clangwrapper_Cursor_SourceLocation___gc(lua_State *L)
 {
     olua_startinvoke(L);
 
-    olua_postgc<clangwrapper::Cursor::SourceLocation>(L, 1);
+    auto self = (clangwrapper::Cursor::SourceLocation *)olua_toobj(L, 1, "clang.Cursor.SourceLocation");
+    olua_postgc(L, self);
 
     olua_endinvoke(L);
 
@@ -4749,7 +4752,8 @@ static int _clangwrapper_clang___gc(lua_State *L)
 {
     olua_startinvoke(L);
 
-    olua_postgc<clangwrapper::clang>(L, 1);
+    auto self = (clangwrapper::clang *)olua_toobj(L, 1, "clang.clang");
+    olua_postgc(L, self);
 
     olua_endinvoke(L);
 
@@ -5161,7 +5165,7 @@ OLUA_LIB int luaopen_clang(lua_State *L)
     olua_require(L, "std.enable_shared_from_this<clang.Index>", luaopen_std_enable_shared_from_this_clangwrapper_Index);
 
     if (olua_getclass(L, olua_getluatype<clangwrapper::clang>(L))) {
-    return 1;
+        return 1;
     }
 
     return 0;

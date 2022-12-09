@@ -2,7 +2,7 @@
 #define __LUACLANG_CLANG_WRAPPER_H__
 
 #include "clang-c/Index.h"
-#include "olua/olua.h"
+#include "olua/olua.hpp"
 
 #include <memory>
 
