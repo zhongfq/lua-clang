@@ -6,8 +6,6 @@ project(luaclang)
 set(LLVM_ENABLE_PROJECTS "clang" CACHE STRING "")
 set(LLVM_TARGETS_TO_BUILD "" CACHE STRING "")
 
-set(LUA "lua54" CACHE STRING "lua version to use, default is lua54")
-
 # llvm-project/clang/tools/libclang/CMakeLists.txt
 set(LIBCLANG_BUILD_STATIC ON CACHE BOOL "")
 if(WIN32)
@@ -42,6 +40,7 @@ set_target_properties(luaclang53 PROPERTIES
 target_include_directories(luaclang53
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/lua53
     ${CMAKE_CURRENT_SOURCE_DIR}/llvm-project/clang/include
 )
 if(APPLE)
@@ -62,6 +61,7 @@ set_target_properties(luaclang54 PROPERTIES
 target_include_directories(luaclang54
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/lua54
     ${CMAKE_CURRENT_SOURCE_DIR}/llvm-project/clang/include
 )
 
