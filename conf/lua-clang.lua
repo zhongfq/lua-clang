@@ -2,15 +2,13 @@ module 'clang'
 
 path 'src'
 
+metapath 'olua/addons'
+
 headers [[
 #include "clang_wrapper.h"
 ]]
 
-luaopen [[
-if (olua_getclass(L, olua_getluatype<clangwrapper::clang>(L))) {
-    return 1;
-}
-]]
+entry "clangwrapper::clang"
 
 local pattern = {
     '^CXGlobalOpt_', '^CXType_', '^CXCursor_', '^CXDiagnostic_', '^CXCallingConv_',
@@ -38,6 +36,7 @@ luacls(function (cppcls)
 end)
 
 typedef 'clangwrapper::string'
+    .luatype 'string'
     .conv 'olua_$$_string'
 
 typeconf 'clangwrapper::Cursor::SourceRange'

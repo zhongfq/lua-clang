@@ -5,6 +5,7 @@ project(luaclang)
 # llvm-project/llvm/CMakeLists.txt
 set(LLVM_ENABLE_PROJECTS "clang" CACHE STRING "")
 set(LLVM_TARGETS_TO_BUILD "" CACHE STRING "")
+set(LLVM_ENABLE_ZSTD "OFF" CACHE STRING "")
 
 # llvm-project/clang/tools/libclang/CMakeLists.txt
 set(LIBCLANG_BUILD_STATIC ON CACHE BOOL "")

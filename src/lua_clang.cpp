@@ -73,6 +73,60 @@ OLUA_LIB int luaopen_clangwrapper_IndexError(lua_State *L)
 }
 OLUA_END_DECLS
 
+static int _clangwrapper_Cursor_SourceRange___call(lua_State *L)
+{
+    olua_startinvoke(L);
+
+    clangwrapper::Cursor::SourceRange ret;
+
+    luaL_checktype(L, 2, LUA_TTABLE);
+
+    std::string arg1;       /** path */
+    unsigned int arg2 = 0;       /** startLine */
+    unsigned int arg3 = 0;       /** startColumn */
+    unsigned int arg4 = 0;       /** endLine */
+    unsigned int arg5 = 0;       /** endColumn */
+
+    olua_getfield(L, 2, "path");
+    olua_check_string(L, -1, &arg1);
+    ret.path = arg1;
+    lua_pop(L, 1);
+
+    olua_getfield(L, 2, "startLine");
+    if (!olua_isnoneornil(L, -1)) {
+        olua_check_integer(L, -1, &arg2);
+        ret.startLine = arg2;
+    }
+    lua_pop(L, 1);
+
+    olua_getfield(L, 2, "startColumn");
+    if (!olua_isnoneornil(L, -1)) {
+        olua_check_integer(L, -1, &arg3);
+        ret.startColumn = arg3;
+    }
+    lua_pop(L, 1);
+
+    olua_getfield(L, 2, "endLine");
+    if (!olua_isnoneornil(L, -1)) {
+        olua_check_integer(L, -1, &arg4);
+        ret.endLine = arg4;
+    }
+    lua_pop(L, 1);
+
+    olua_getfield(L, 2, "endColumn");
+    if (!olua_isnoneornil(L, -1)) {
+        olua_check_integer(L, -1, &arg5);
+        ret.endColumn = arg5;
+    }
+    lua_pop(L, 1);
+
+    olua_pushcopy_object(L, ret, "clang.Cursor.SourceRange");
+
+    olua_endinvoke(L);
+
+    return 1;
+}
+
 static int _clangwrapper_Cursor_SourceRange___gc(lua_State *L)
 {
     olua_startinvoke(L);
@@ -276,6 +330,7 @@ OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clangwrapper_Cursor_SourceRange(lua_State *L)
 {
     oluacls_class<clangwrapper::Cursor::SourceRange>(L, "clang.Cursor.SourceRange");
+    oluacls_func(L, "__call", _clangwrapper_Cursor_SourceRange___call);
     oluacls_func(L, "__gc", _clangwrapper_Cursor_SourceRange___gc);
     oluacls_func(L, "__olua_move", _clangwrapper_Cursor_SourceRange___olua_move);
     oluacls_prop(L, "endColumn", _clangwrapper_Cursor_SourceRange_get_endColumn, _clangwrapper_Cursor_SourceRange_set_endColumn);
@@ -287,6 +342,44 @@ OLUA_LIB int luaopen_clangwrapper_Cursor_SourceRange(lua_State *L)
     return 1;
 }
 OLUA_END_DECLS
+
+static int _clangwrapper_Cursor_SourceLocation___call(lua_State *L)
+{
+    olua_startinvoke(L);
+
+    clangwrapper::Cursor::SourceLocation ret;
+
+    luaL_checktype(L, 2, LUA_TTABLE);
+
+    std::string arg1;       /** path */
+    unsigned int arg2 = 0;       /** line */
+    unsigned int arg3 = 0;       /** column */
+
+    olua_getfield(L, 2, "path");
+    olua_check_string(L, -1, &arg1);
+    ret.path = arg1;
+    lua_pop(L, 1);
+
+    olua_getfield(L, 2, "line");
+    if (!olua_isnoneornil(L, -1)) {
+        olua_check_integer(L, -1, &arg2);
+        ret.line = arg2;
+    }
+    lua_pop(L, 1);
+
+    olua_getfield(L, 2, "column");
+    if (!olua_isnoneornil(L, -1)) {
+        olua_check_integer(L, -1, &arg3);
+        ret.column = arg3;
+    }
+    lua_pop(L, 1);
+
+    olua_pushcopy_object(L, ret, "clang.Cursor.SourceLocation");
+
+    olua_endinvoke(L);
+
+    return 1;
+}
 
 static int _clangwrapper_Cursor_SourceLocation___gc(lua_State *L)
 {
@@ -421,6 +514,7 @@ OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clangwrapper_Cursor_SourceLocation(lua_State *L)
 {
     oluacls_class<clangwrapper::Cursor::SourceLocation>(L, "clang.Cursor.SourceLocation");
+    oluacls_func(L, "__call", _clangwrapper_Cursor_SourceLocation___call);
     oluacls_func(L, "__gc", _clangwrapper_Cursor_SourceLocation___gc);
     oluacls_func(L, "__olua_move", _clangwrapper_Cursor_SourceLocation___olua_move);
     oluacls_prop(L, "column", _clangwrapper_Cursor_SourceLocation_get_column, _clangwrapper_Cursor_SourceLocation_set_column);
@@ -460,8 +554,11 @@ OLUA_LIB int luaopen_clangwrapper_CallingConv(lua_State *L)
     oluacls_enum(L, "Default", (lua_Integer)clangwrapper::CallingConv::CXCallingConv_Default);
     oluacls_enum(L, "IntelOclBicc", (lua_Integer)clangwrapper::CallingConv::CXCallingConv_IntelOclBicc);
     oluacls_enum(L, "Invalid", (lua_Integer)clangwrapper::CallingConv::CXCallingConv_Invalid);
+    oluacls_enum(L, "M68kRTD", (lua_Integer)clangwrapper::CallingConv::CXCallingConv_M68kRTD);
     oluacls_enum(L, "PreserveAll", (lua_Integer)clangwrapper::CallingConv::CXCallingConv_PreserveAll);
     oluacls_enum(L, "PreserveMost", (lua_Integer)clangwrapper::CallingConv::CXCallingConv_PreserveMost);
+    oluacls_enum(L, "PreserveNone", (lua_Integer)clangwrapper::CallingConv::CXCallingConv_PreserveNone);
+    oluacls_enum(L, "RISCVVectorCall", (lua_Integer)clangwrapper::CallingConv::CXCallingConv_RISCVVectorCall);
     oluacls_enum(L, "Swift", (lua_Integer)clangwrapper::CallingConv::CXCallingConv_Swift);
     oluacls_enum(L, "SwiftAsync", (lua_Integer)clangwrapper::CallingConv::CXCallingConv_SwiftAsync);
     oluacls_enum(L, "Unexposed", (lua_Integer)clangwrapper::CallingConv::CXCallingConv_Unexposed);
@@ -488,6 +585,7 @@ OLUA_LIB int luaopen_clangwrapper_CursorKind(lua_State *L)
     oluacls_enum(L, "AddrLabelExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_AddrLabelExpr);
     oluacls_enum(L, "AlignedAttr", (lua_Integer)clangwrapper::CursorKind::CXCursor_AlignedAttr);
     oluacls_enum(L, "AnnotateAttr", (lua_Integer)clangwrapper::CursorKind::CXCursor_AnnotateAttr);
+    oluacls_enum(L, "ArraySectionExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_ArraySectionExpr);
     oluacls_enum(L, "ArraySubscriptExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_ArraySubscriptExpr);
     oluacls_enum(L, "AsmLabelAttr", (lua_Integer)clangwrapper::CursorKind::CXCursor_AsmLabelAttr);
     oluacls_enum(L, "AsmStmt", (lua_Integer)clangwrapper::CursorKind::CXCursor_AsmStmt);
@@ -516,6 +614,7 @@ OLUA_LIB int luaopen_clangwrapper_CursorKind(lua_State *L)
     oluacls_enum(L, "CXXNewExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_CXXNewExpr);
     oluacls_enum(L, "CXXNullPtrLiteralExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_CXXNullPtrLiteralExpr);
     oluacls_enum(L, "CXXOverrideAttr", (lua_Integer)clangwrapper::CursorKind::CXCursor_CXXOverrideAttr);
+    oluacls_enum(L, "CXXParenListInitExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_CXXParenListInitExpr);
     oluacls_enum(L, "CXXReinterpretCastExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_CXXReinterpretCastExpr);
     oluacls_enum(L, "CXXStaticCastExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_CXXStaticCastExpr);
     oluacls_enum(L, "CXXThisExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_CXXThisExpr);
@@ -611,7 +710,6 @@ OLUA_LIB int luaopen_clangwrapper_CursorKind(lua_State *L)
     oluacls_enum(L, "NonTypeTemplateParameter", (lua_Integer)clangwrapper::CursorKind::CXCursor_NonTypeTemplateParameter);
     oluacls_enum(L, "NotImplemented", (lua_Integer)clangwrapper::CursorKind::CXCursor_NotImplemented);
     oluacls_enum(L, "NullStmt", (lua_Integer)clangwrapper::CursorKind::CXCursor_NullStmt);
-    oluacls_enum(L, "OMPArraySectionExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_OMPArraySectionExpr);
     oluacls_enum(L, "OMPArrayShapingExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_OMPArrayShapingExpr);
     oluacls_enum(L, "OMPAtomicDirective", (lua_Integer)clangwrapper::CursorKind::CXCursor_OMPAtomicDirective);
     oluacls_enum(L, "OMPBarrierDirective", (lua_Integer)clangwrapper::CursorKind::CXCursor_OMPBarrierDirective);
@@ -652,6 +750,7 @@ OLUA_LIB int luaopen_clangwrapper_CursorKind(lua_State *L)
     oluacls_enum(L, "OMPParallelMasterTaskLoopSimdDirective", (lua_Integer)clangwrapper::CursorKind::CXCursor_OMPParallelMasterTaskLoopSimdDirective);
     oluacls_enum(L, "OMPParallelSectionsDirective", (lua_Integer)clangwrapper::CursorKind::CXCursor_OMPParallelSectionsDirective);
     oluacls_enum(L, "OMPScanDirective", (lua_Integer)clangwrapper::CursorKind::CXCursor_OMPScanDirective);
+    oluacls_enum(L, "OMPScopeDirective", (lua_Integer)clangwrapper::CursorKind::CXCursor_OMPScopeDirective);
     oluacls_enum(L, "OMPSectionDirective", (lua_Integer)clangwrapper::CursorKind::CXCursor_OMPSectionDirective);
     oluacls_enum(L, "OMPSectionsDirective", (lua_Integer)clangwrapper::CursorKind::CXCursor_OMPSectionsDirective);
     oluacls_enum(L, "OMPSimdDirective", (lua_Integer)clangwrapper::CursorKind::CXCursor_OMPSimdDirective);
@@ -728,9 +827,12 @@ OLUA_LIB int luaopen_clangwrapper_CursorKind(lua_State *L)
     oluacls_enum(L, "ObjCSubclassingRestricted", (lua_Integer)clangwrapper::CursorKind::CXCursor_ObjCSubclassingRestricted);
     oluacls_enum(L, "ObjCSuperClassRef", (lua_Integer)clangwrapper::CursorKind::CXCursor_ObjCSuperClassRef);
     oluacls_enum(L, "ObjCSynthesizeDecl", (lua_Integer)clangwrapper::CursorKind::CXCursor_ObjCSynthesizeDecl);
+    oluacls_enum(L, "OpenACCComputeConstruct", (lua_Integer)clangwrapper::CursorKind::CXCursor_OpenACCComputeConstruct);
+    oluacls_enum(L, "OpenACCLoopConstruct", (lua_Integer)clangwrapper::CursorKind::CXCursor_OpenACCLoopConstruct);
     oluacls_enum(L, "OverloadCandidate", (lua_Integer)clangwrapper::CursorKind::CXCursor_OverloadCandidate);
     oluacls_enum(L, "OverloadedDeclRef", (lua_Integer)clangwrapper::CursorKind::CXCursor_OverloadedDeclRef);
     oluacls_enum(L, "PackExpansionExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_PackExpansionExpr);
+    oluacls_enum(L, "PackIndexingExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_PackIndexingExpr);
     oluacls_enum(L, "PackedAttr", (lua_Integer)clangwrapper::CursorKind::CXCursor_PackedAttr);
     oluacls_enum(L, "ParenExpr", (lua_Integer)clangwrapper::CursorKind::CXCursor_ParenExpr);
     oluacls_enum(L, "ParmDecl", (lua_Integer)clangwrapper::CursorKind::CXCursor_ParmDecl);
@@ -1005,11 +1107,15 @@ OLUA_LIB int luaopen_clangwrapper_TypeKind(lua_State *L)
     oluacls_enum(L, "OCLImage3dRW", (lua_Integer)clangwrapper::TypeKind::CXType_OCLImage3dRW);
     oluacls_enum(L, "OCLImage3dWO", (lua_Integer)clangwrapper::TypeKind::CXType_OCLImage3dWO);
     oluacls_enum(L, "OCLIntelSubgroupAVCImeDualRefStreamin", (lua_Integer)clangwrapper::TypeKind::CXType_OCLIntelSubgroupAVCImeDualRefStreamin);
+    oluacls_enum(L, "OCLIntelSubgroupAVCImeDualReferenceStreamin", (lua_Integer)clangwrapper::TypeKind::CXType_OCLIntelSubgroupAVCImeDualReferenceStreamin);
     oluacls_enum(L, "OCLIntelSubgroupAVCImePayload", (lua_Integer)clangwrapper::TypeKind::CXType_OCLIntelSubgroupAVCImePayload);
     oluacls_enum(L, "OCLIntelSubgroupAVCImeResult", (lua_Integer)clangwrapper::TypeKind::CXType_OCLIntelSubgroupAVCImeResult);
     oluacls_enum(L, "OCLIntelSubgroupAVCImeResultDualRefStreamout", (lua_Integer)clangwrapper::TypeKind::CXType_OCLIntelSubgroupAVCImeResultDualRefStreamout);
+    oluacls_enum(L, "OCLIntelSubgroupAVCImeResultDualReferenceStreamout", (lua_Integer)clangwrapper::TypeKind::CXType_OCLIntelSubgroupAVCImeResultDualReferenceStreamout);
     oluacls_enum(L, "OCLIntelSubgroupAVCImeResultSingleRefStreamout", (lua_Integer)clangwrapper::TypeKind::CXType_OCLIntelSubgroupAVCImeResultSingleRefStreamout);
+    oluacls_enum(L, "OCLIntelSubgroupAVCImeResultSingleReferenceStreamout", (lua_Integer)clangwrapper::TypeKind::CXType_OCLIntelSubgroupAVCImeResultSingleReferenceStreamout);
     oluacls_enum(L, "OCLIntelSubgroupAVCImeSingleRefStreamin", (lua_Integer)clangwrapper::TypeKind::CXType_OCLIntelSubgroupAVCImeSingleRefStreamin);
+    oluacls_enum(L, "OCLIntelSubgroupAVCImeSingleReferenceStreamin", (lua_Integer)clangwrapper::TypeKind::CXType_OCLIntelSubgroupAVCImeSingleReferenceStreamin);
     oluacls_enum(L, "OCLIntelSubgroupAVCMcePayload", (lua_Integer)clangwrapper::TypeKind::CXType_OCLIntelSubgroupAVCMcePayload);
     oluacls_enum(L, "OCLIntelSubgroupAVCMceResult", (lua_Integer)clangwrapper::TypeKind::CXType_OCLIntelSubgroupAVCMceResult);
     oluacls_enum(L, "OCLIntelSubgroupAVCRefPayload", (lua_Integer)clangwrapper::TypeKind::CXType_OCLIntelSubgroupAVCRefPayload);
@@ -1444,6 +1550,44 @@ static int _clangwrapper_Type_as(lua_State *L)
     return 1;
 }
 
+static int _clangwrapper_Type_getArgType(lua_State *L)
+{
+    olua_startinvoke(L);
+
+    clangwrapper::Type *self = nullptr;
+    unsigned int arg1 = 0;       /** i */
+
+    olua_to_object(L, 1, &self, "clang.Type");
+    olua_check_integer(L, 2, &arg1);
+
+    // std::shared_ptr<clangwrapper::Type> getArgType(unsigned int i)
+    std::shared_ptr<clangwrapper::Type> ret = self->getArgType(arg1);
+    int num_ret = olua_push_object(L, &ret, "clang.Type");
+
+    olua_endinvoke(L);
+
+    return num_ret;
+}
+
+static int _clangwrapper_Type_getTemplateArgument(lua_State *L)
+{
+    olua_startinvoke(L);
+
+    clangwrapper::Type *self = nullptr;
+    unsigned int arg1 = 0;       /** i */
+
+    olua_to_object(L, 1, &self, "clang.Type");
+    olua_check_integer(L, 2, &arg1);
+
+    // std::shared_ptr<clangwrapper::Type> getTemplateArgument(unsigned int i)
+    std::shared_ptr<clangwrapper::Type> ret = self->getTemplateArgument(arg1);
+    int num_ret = olua_push_object(L, &ret, "clang.Type");
+
+    olua_endinvoke(L);
+
+    return num_ret;
+}
+
 static int _clangwrapper_Type_offsetOf(lua_State *L)
 {
     olua_startinvoke(L);
@@ -1524,7 +1668,7 @@ static int _clangwrapper_Type_argTypes(lua_State *L)
 
     // @getter std::vector<std::shared_ptr<clangwrapper::Type>> argTypes()
     std::vector<std::shared_ptr<clangwrapper::Type>> ret = self->argTypes();
-    int num_ret = olua_push_vector<std::shared_ptr<clangwrapper::Type>>(L, ret, [L](std::shared_ptr<clangwrapper::Type> &arg1) {
+    int num_ret = olua_push_array<std::shared_ptr<clangwrapper::Type>>(L, ret, [L](std::shared_ptr<clangwrapper::Type> &arg1) {
         olua_push_object(L, &arg1, "clang.Type");
     });
 
@@ -1696,7 +1840,7 @@ static int _clangwrapper_Type_fields(lua_State *L)
 
     // @getter std::vector<std::shared_ptr<clangwrapper::Cursor>> fields()
     std::vector<std::shared_ptr<clangwrapper::Cursor>> ret = self->fields();
-    int num_ret = olua_push_vector<std::shared_ptr<clangwrapper::Cursor>>(L, ret, [L](std::shared_ptr<clangwrapper::Cursor> &arg1) {
+    int num_ret = olua_push_array<std::shared_ptr<clangwrapper::Cursor>>(L, ret, [L](std::shared_ptr<clangwrapper::Cursor> &arg1) {
         olua_push_object(L, &arg1, "clang.Cursor");
     });
 
@@ -1716,23 +1860,6 @@ static int _clangwrapper_Type_functionTypeCallingConv(lua_State *L)
     // @getter clangwrapper::CallingConv functionTypeCallingConv()
     clangwrapper::CallingConv ret = self->functionTypeCallingConv();
     int num_ret = olua_push_enum(L, ret);
-
-    olua_endinvoke(L);
-
-    return num_ret;
-}
-
-static int _clangwrapper_Type_functionTypeCallingConvSpelling(lua_State *L)
-{
-    olua_startinvoke(L);
-
-    clangwrapper::Type *self = nullptr;
-
-    olua_to_object(L, 1, &self, "clang.Type");
-
-    // @getter clangwrapper::string functionTypeCallingConvSpelling()
-    clangwrapper::string ret = self->functionTypeCallingConvSpelling();
-    int num_ret = olua_push_string(L, ret);
 
     olua_endinvoke(L);
 
@@ -1909,6 +2036,23 @@ static int _clangwrapper_Type_name(lua_State *L)
     return num_ret;
 }
 
+static int _clangwrapper_Type_namedType(lua_State *L)
+{
+    olua_startinvoke(L);
+
+    clangwrapper::Type *self = nullptr;
+
+    olua_to_object(L, 1, &self, "clang.Type");
+
+    // @getter std::shared_ptr<clangwrapper::Type> namedType()
+    std::shared_ptr<clangwrapper::Type> ret = self->namedType();
+    int num_ret = olua_push_object(L, &ret, "clang.Type");
+
+    olua_endinvoke(L);
+
+    return num_ret;
+}
+
 static int _clangwrapper_Type_nonReferenceType(lua_State *L)
 {
     olua_startinvoke(L);
@@ -2038,7 +2182,7 @@ static int _clangwrapper_Type_templateArgumentTypes(lua_State *L)
 
     // @getter std::vector<std::shared_ptr<clangwrapper::Type>> templateArgumentTypes()
     std::vector<std::shared_ptr<clangwrapper::Type>> ret = self->templateArgumentTypes();
-    int num_ret = olua_push_vector<std::shared_ptr<clangwrapper::Type>>(L, ret, [L](std::shared_ptr<clangwrapper::Type> &arg1) {
+    int num_ret = olua_push_array<std::shared_ptr<clangwrapper::Type>>(L, ret, [L](std::shared_ptr<clangwrapper::Type> &arg1) {
         olua_push_object(L, &arg1, "clang.Type");
     });
 
@@ -2104,6 +2248,8 @@ OLUA_LIB int luaopen_clangwrapper_Type(lua_State *L)
     oluacls_class<clangwrapper::Type, clangwrapper::IndexError>(L, "clang.Type");
     oluacls_func(L, "__eq", _clangwrapper_Type___eq);
     oluacls_func(L, "as", _clangwrapper_Type_as);
+    oluacls_func(L, "getArgType", _clangwrapper_Type_getArgType);
+    oluacls_func(L, "getTemplateArgument", _clangwrapper_Type_getTemplateArgument);
     oluacls_func(L, "offsetOf", _clangwrapper_Type_offsetOf);
     oluacls_func(L, "shared_from_this", _clangwrapper_Type_shared_from_this);
     oluacls_prop(L, "addressSpace", _clangwrapper_Type_addressSpace, nullptr);
@@ -2120,7 +2266,6 @@ OLUA_LIB int luaopen_clangwrapper_Type(lua_State *L)
     oluacls_prop(L, "exceptionSpecificationType", _clangwrapper_Type_exceptionSpecificationType, nullptr);
     oluacls_prop(L, "fields", _clangwrapper_Type_fields, nullptr);
     oluacls_prop(L, "functionTypeCallingConv", _clangwrapper_Type_functionTypeCallingConv, nullptr);
-    oluacls_prop(L, "functionTypeCallingConvSpelling", _clangwrapper_Type_functionTypeCallingConvSpelling, nullptr);
     oluacls_prop(L, "isConstQualified", _clangwrapper_Type_isConstQualified, nullptr);
     oluacls_prop(L, "isFunctionTypeVariadic", _clangwrapper_Type_isFunctionTypeVariadic, nullptr);
     oluacls_prop(L, "isPOD", _clangwrapper_Type_isPOD, nullptr);
@@ -2131,6 +2276,7 @@ OLUA_LIB int luaopen_clangwrapper_Type(lua_State *L)
     oluacls_prop(L, "kindSpelling", _clangwrapper_Type_kindSpelling, nullptr);
     oluacls_prop(L, "modifiedType", _clangwrapper_Type_modifiedType, nullptr);
     oluacls_prop(L, "name", _clangwrapper_Type_name, nullptr);
+    oluacls_prop(L, "namedType", _clangwrapper_Type_namedType, nullptr);
     oluacls_prop(L, "nonReferenceType", _clangwrapper_Type_nonReferenceType, nullptr);
     oluacls_prop(L, "nullability", _clangwrapper_Type_nullability, nullptr);
     oluacls_prop(L, "nullabilitySpelling", _clangwrapper_Type_nullabilitySpelling, nullptr);
@@ -2305,25 +2451,6 @@ static int _clangwrapper_Cursor_templateArgumentKind(lua_State *L)
     return num_ret;
 }
 
-static int _clangwrapper_Cursor_templateArgumentKindSpelling(lua_State *L)
-{
-    olua_startinvoke(L);
-
-    clangwrapper::Cursor *self = nullptr;
-    unsigned int arg1 = 0;       /** index */
-
-    olua_to_object(L, 1, &self, "clang.Cursor");
-    olua_check_integer(L, 2, &arg1);
-
-    // clangwrapper::string templateArgumentKindSpelling(unsigned int index)
-    clangwrapper::string ret = self->templateArgumentKindSpelling(arg1);
-    int num_ret = olua_push_string(L, ret);
-
-    olua_endinvoke(L);
-
-    return num_ret;
-}
-
 static int _clangwrapper_Cursor_templateArgumentUnsignedValue(lua_State *L)
 {
     olua_startinvoke(L);
@@ -2372,7 +2499,7 @@ static int _clangwrapper_Cursor_arguments(lua_State *L)
 
     // @getter std::vector<std::shared_ptr<clangwrapper::Cursor>> arguments()
     std::vector<std::shared_ptr<clangwrapper::Cursor>> ret = self->arguments();
-    int num_ret = olua_push_vector<std::shared_ptr<clangwrapper::Cursor>>(L, ret, [L](std::shared_ptr<clangwrapper::Cursor> &arg1) {
+    int num_ret = olua_push_array<std::shared_ptr<clangwrapper::Cursor>>(L, ret, [L](std::shared_ptr<clangwrapper::Cursor> &arg1) {
         olua_push_object(L, &arg1, "clang.Cursor");
     });
 
@@ -2392,23 +2519,6 @@ static int _clangwrapper_Cursor_availability(lua_State *L)
     // @getter clangwrapper::AvailabilityKind availability()
     clangwrapper::AvailabilityKind ret = self->availability();
     int num_ret = olua_push_enum(L, ret);
-
-    olua_endinvoke(L);
-
-    return num_ret;
-}
-
-static int _clangwrapper_Cursor_availabilitySpelling(lua_State *L)
-{
-    olua_startinvoke(L);
-
-    clangwrapper::Cursor *self = nullptr;
-
-    olua_to_object(L, 1, &self, "clang.Cursor");
-
-    // @getter clangwrapper::string availabilitySpelling()
-    clangwrapper::string ret = self->availabilitySpelling();
-    int num_ret = olua_push_string(L, ret);
 
     olua_endinvoke(L);
 
@@ -2459,7 +2569,7 @@ static int _clangwrapper_Cursor_children(lua_State *L)
 
     // @getter std::vector<std::shared_ptr<clangwrapper::Cursor>> children()
     std::vector<std::shared_ptr<clangwrapper::Cursor>> ret = self->children();
-    int num_ret = olua_push_vector<std::shared_ptr<clangwrapper::Cursor>>(L, ret, [L](std::shared_ptr<clangwrapper::Cursor> &arg1) {
+    int num_ret = olua_push_array<std::shared_ptr<clangwrapper::Cursor>>(L, ret, [L](std::shared_ptr<clangwrapper::Cursor> &arg1) {
         olua_push_object(L, &arg1, "clang.Cursor");
     });
 
@@ -2529,7 +2639,7 @@ static int _clangwrapper_Cursor_cxxManglings(lua_State *L)
 
     // @getter std::vector<clangwrapper::string> cxxManglings()
     std::vector<clangwrapper::string> ret = self->cxxManglings();
-    int num_ret = olua_push_vector<clangwrapper::string>(L, ret, [L](clangwrapper::string &arg1) {
+    int num_ret = olua_push_array<clangwrapper::string>(L, ret, [L](clangwrapper::string &arg1) {
         olua_push_string(L, arg1);
     });
 
@@ -2810,6 +2920,23 @@ static int _clangwrapper_Cursor_isBitField(lua_State *L)
     return num_ret;
 }
 
+static int _clangwrapper_Cursor_isCXXAbstract(lua_State *L)
+{
+    olua_startinvoke(L);
+
+    clangwrapper::Cursor *self = nullptr;
+
+    olua_to_object(L, 1, &self, "clang.Cursor");
+
+    // @getter bool isCXXAbstract()
+    bool ret = self->isCXXAbstract();
+    int num_ret = olua_push_bool(L, ret);
+
+    olua_endinvoke(L);
+
+    return num_ret;
+}
+
 static int _clangwrapper_Cursor_isCXXConvertingConstructor(lua_State *L)
 {
     olua_startinvoke(L);
@@ -2878,7 +3005,7 @@ static int _clangwrapper_Cursor_isCXXFieldMutable(lua_State *L)
     return num_ret;
 }
 
-static int _clangwrapper_Cursor_isCXXMethoAbstract(lua_State *L)
+static int _clangwrapper_Cursor_isCXXMethodConst(lua_State *L)
 {
     olua_startinvoke(L);
 
@@ -2886,8 +3013,8 @@ static int _clangwrapper_Cursor_isCXXMethoAbstract(lua_State *L)
 
     olua_to_object(L, 1, &self, "clang.Cursor");
 
-    // @getter bool isCXXMethoAbstract()
-    bool ret = self->isCXXMethoAbstract();
+    // @getter bool isCXXMethodConst()
+    bool ret = self->isCXXMethodConst();
     int num_ret = olua_push_bool(L, ret);
 
     olua_endinvoke(L);
@@ -2895,7 +3022,7 @@ static int _clangwrapper_Cursor_isCXXMethoAbstract(lua_State *L)
     return num_ret;
 }
 
-static int _clangwrapper_Cursor_isCXXMethoConst(lua_State *L)
+static int _clangwrapper_Cursor_isCXXMethodCopyAssignmentOperator(lua_State *L)
 {
     olua_startinvoke(L);
 
@@ -2903,93 +3030,8 @@ static int _clangwrapper_Cursor_isCXXMethoConst(lua_State *L)
 
     olua_to_object(L, 1, &self, "clang.Cursor");
 
-    // @getter bool isCXXMethoConst()
-    bool ret = self->isCXXMethoConst();
-    int num_ret = olua_push_bool(L, ret);
-
-    olua_endinvoke(L);
-
-    return num_ret;
-}
-
-static int _clangwrapper_Cursor_isCXXMethoCopyAssignmentOperator(lua_State *L)
-{
-    olua_startinvoke(L);
-
-    clangwrapper::Cursor *self = nullptr;
-
-    olua_to_object(L, 1, &self, "clang.Cursor");
-
-    // @getter bool isCXXMethoCopyAssignmentOperator()
-    bool ret = self->isCXXMethoCopyAssignmentOperator();
-    int num_ret = olua_push_bool(L, ret);
-
-    olua_endinvoke(L);
-
-    return num_ret;
-}
-
-static int _clangwrapper_Cursor_isCXXMethoDeleted(lua_State *L)
-{
-    olua_startinvoke(L);
-
-    clangwrapper::Cursor *self = nullptr;
-
-    olua_to_object(L, 1, &self, "clang.Cursor");
-
-    // @getter bool isCXXMethoDeleted()
-    bool ret = self->isCXXMethoDeleted();
-    int num_ret = olua_push_bool(L, ret);
-
-    olua_endinvoke(L);
-
-    return num_ret;
-}
-
-static int _clangwrapper_Cursor_isCXXMethoPureVirtual(lua_State *L)
-{
-    olua_startinvoke(L);
-
-    clangwrapper::Cursor *self = nullptr;
-
-    olua_to_object(L, 1, &self, "clang.Cursor");
-
-    // @getter bool isCXXMethoPureVirtual()
-    bool ret = self->isCXXMethoPureVirtual();
-    int num_ret = olua_push_bool(L, ret);
-
-    olua_endinvoke(L);
-
-    return num_ret;
-}
-
-static int _clangwrapper_Cursor_isCXXMethoStatic(lua_State *L)
-{
-    olua_startinvoke(L);
-
-    clangwrapper::Cursor *self = nullptr;
-
-    olua_to_object(L, 1, &self, "clang.Cursor");
-
-    // @getter bool isCXXMethoStatic()
-    bool ret = self->isCXXMethoStatic();
-    int num_ret = olua_push_bool(L, ret);
-
-    olua_endinvoke(L);
-
-    return num_ret;
-}
-
-static int _clangwrapper_Cursor_isCXXMethoVirtual(lua_State *L)
-{
-    olua_startinvoke(L);
-
-    clangwrapper::Cursor *self = nullptr;
-
-    olua_to_object(L, 1, &self, "clang.Cursor");
-
-    // @getter bool isCXXMethoVirtual()
-    bool ret = self->isCXXMethoVirtual();
+    // @getter bool isCXXMethodCopyAssignmentOperator()
+    bool ret = self->isCXXMethodCopyAssignmentOperator();
     int num_ret = olua_push_bool(L, ret);
 
     olua_endinvoke(L);
@@ -3007,6 +3049,108 @@ static int _clangwrapper_Cursor_isCXXMethodDefaulted(lua_State *L)
 
     // @getter bool isCXXMethodDefaulted()
     bool ret = self->isCXXMethodDefaulted();
+    int num_ret = olua_push_bool(L, ret);
+
+    olua_endinvoke(L);
+
+    return num_ret;
+}
+
+static int _clangwrapper_Cursor_isCXXMethodDeleted(lua_State *L)
+{
+    olua_startinvoke(L);
+
+    clangwrapper::Cursor *self = nullptr;
+
+    olua_to_object(L, 1, &self, "clang.Cursor");
+
+    // @getter bool isCXXMethodDeleted()
+    bool ret = self->isCXXMethodDeleted();
+    int num_ret = olua_push_bool(L, ret);
+
+    olua_endinvoke(L);
+
+    return num_ret;
+}
+
+static int _clangwrapper_Cursor_isCXXMethodExplicit(lua_State *L)
+{
+    olua_startinvoke(L);
+
+    clangwrapper::Cursor *self = nullptr;
+
+    olua_to_object(L, 1, &self, "clang.Cursor");
+
+    // @getter bool isCXXMethodExplicit()
+    bool ret = self->isCXXMethodExplicit();
+    int num_ret = olua_push_bool(L, ret);
+
+    olua_endinvoke(L);
+
+    return num_ret;
+}
+
+static int _clangwrapper_Cursor_isCXXMethodMoveAssignmentOperator(lua_State *L)
+{
+    olua_startinvoke(L);
+
+    clangwrapper::Cursor *self = nullptr;
+
+    olua_to_object(L, 1, &self, "clang.Cursor");
+
+    // @getter bool isCXXMethodMoveAssignmentOperator()
+    bool ret = self->isCXXMethodMoveAssignmentOperator();
+    int num_ret = olua_push_bool(L, ret);
+
+    olua_endinvoke(L);
+
+    return num_ret;
+}
+
+static int _clangwrapper_Cursor_isCXXMethodPureVirtual(lua_State *L)
+{
+    olua_startinvoke(L);
+
+    clangwrapper::Cursor *self = nullptr;
+
+    olua_to_object(L, 1, &self, "clang.Cursor");
+
+    // @getter bool isCXXMethodPureVirtual()
+    bool ret = self->isCXXMethodPureVirtual();
+    int num_ret = olua_push_bool(L, ret);
+
+    olua_endinvoke(L);
+
+    return num_ret;
+}
+
+static int _clangwrapper_Cursor_isCXXMethodStatic(lua_State *L)
+{
+    olua_startinvoke(L);
+
+    clangwrapper::Cursor *self = nullptr;
+
+    olua_to_object(L, 1, &self, "clang.Cursor");
+
+    // @getter bool isCXXMethodStatic()
+    bool ret = self->isCXXMethodStatic();
+    int num_ret = olua_push_bool(L, ret);
+
+    olua_endinvoke(L);
+
+    return num_ret;
+}
+
+static int _clangwrapper_Cursor_isCXXMethodVirtual(lua_State *L)
+{
+    olua_startinvoke(L);
+
+    clangwrapper::Cursor *self = nullptr;
+
+    olua_to_object(L, 1, &self, "clang.Cursor");
+
+    // @getter bool isCXXMethodVirtual()
+    bool ret = self->isCXXMethodVirtual();
     int num_ret = olua_push_bool(L, ret);
 
     olua_endinvoke(L);
@@ -3422,23 +3566,6 @@ static int _clangwrapper_Cursor_language(lua_State *L)
     return num_ret;
 }
 
-static int _clangwrapper_Cursor_languageSpelling(lua_State *L)
-{
-    olua_startinvoke(L);
-
-    clangwrapper::Cursor *self = nullptr;
-
-    olua_to_object(L, 1, &self, "clang.Cursor");
-
-    // @getter clangwrapper::string languageSpelling()
-    clangwrapper::string ret = self->languageSpelling();
-    int num_ret = olua_push_string(L, ret);
-
-    olua_endinvoke(L);
-
-    return num_ret;
-}
-
 static int _clangwrapper_Cursor_lexicalParent(lua_State *L)
 {
     olua_startinvoke(L);
@@ -3467,23 +3594,6 @@ static int _clangwrapper_Cursor_linkage(lua_State *L)
     // @getter clangwrapper::LinkageKind linkage()
     clangwrapper::LinkageKind ret = self->linkage();
     int num_ret = olua_push_enum(L, ret);
-
-    olua_endinvoke(L);
-
-    return num_ret;
-}
-
-static int _clangwrapper_Cursor_linkageSpelling(lua_State *L)
-{
-    olua_startinvoke(L);
-
-    clangwrapper::Cursor *self = nullptr;
-
-    olua_to_object(L, 1, &self, "clang.Cursor");
-
-    // @getter clangwrapper::string linkageSpelling()
-    clangwrapper::string ret = self->linkageSpelling();
-    int num_ret = olua_push_string(L, ret);
 
     olua_endinvoke(L);
 
@@ -3551,7 +3661,7 @@ static int _clangwrapper_Cursor_overloadedDecls(lua_State *L)
 
     // @getter std::vector<std::shared_ptr<clangwrapper::Cursor>> overloadedDecls()
     std::vector<std::shared_ptr<clangwrapper::Cursor>> ret = self->overloadedDecls();
-    int num_ret = olua_push_vector<std::shared_ptr<clangwrapper::Cursor>>(L, ret, [L](std::shared_ptr<clangwrapper::Cursor> &arg1) {
+    int num_ret = olua_push_array<std::shared_ptr<clangwrapper::Cursor>>(L, ret, [L](std::shared_ptr<clangwrapper::Cursor> &arg1) {
         olua_push_object(L, &arg1, "clang.Cursor");
     });
 
@@ -3747,23 +3857,6 @@ static int _clangwrapper_Cursor_storageClass(lua_State *L)
     return num_ret;
 }
 
-static int _clangwrapper_Cursor_storageClassSpelling(lua_State *L)
-{
-    olua_startinvoke(L);
-
-    clangwrapper::Cursor *self = nullptr;
-
-    olua_to_object(L, 1, &self, "clang.Cursor");
-
-    // @getter clangwrapper::string storageClassSpelling()
-    clangwrapper::string ret = self->storageClassSpelling();
-    int num_ret = olua_push_string(L, ret);
-
-    olua_endinvoke(L);
-
-    return num_ret;
-}
-
 static int _clangwrapper_Cursor_templateArgumentTypes(lua_State *L)
 {
     olua_startinvoke(L);
@@ -3774,7 +3867,7 @@ static int _clangwrapper_Cursor_templateArgumentTypes(lua_State *L)
 
     // @getter std::vector<std::shared_ptr<clangwrapper::Type>> templateArgumentTypes()
     std::vector<std::shared_ptr<clangwrapper::Type>> ret = self->templateArgumentTypes();
-    int num_ret = olua_push_vector<std::shared_ptr<clangwrapper::Type>>(L, ret, [L](std::shared_ptr<clangwrapper::Type> &arg1) {
+    int num_ret = olua_push_array<std::shared_ptr<clangwrapper::Type>>(L, ret, [L](std::shared_ptr<clangwrapper::Type> &arg1) {
         olua_push_object(L, &arg1, "clang.Type");
     });
 
@@ -3828,23 +3921,6 @@ static int _clangwrapper_Cursor_tlsKind(lua_State *L)
     // @getter clangwrapper::TLSKind tlsKind()
     clangwrapper::TLSKind ret = self->tlsKind();
     int num_ret = olua_push_enum(L, ret);
-
-    olua_endinvoke(L);
-
-    return num_ret;
-}
-
-static int _clangwrapper_Cursor_tlsKindSpelling(lua_State *L)
-{
-    olua_startinvoke(L);
-
-    clangwrapper::Cursor *self = nullptr;
-
-    olua_to_object(L, 1, &self, "clang.Cursor");
-
-    // @getter clangwrapper::string tlsKindSpelling()
-    clangwrapper::string ret = self->tlsKindSpelling();
-    int num_ret = olua_push_string(L, ret);
 
     olua_endinvoke(L);
 
@@ -3936,23 +4012,6 @@ static int _clangwrapper_Cursor_visibility(lua_State *L)
     return num_ret;
 }
 
-static int _clangwrapper_Cursor_visibilitySpelling(lua_State *L)
-{
-    olua_startinvoke(L);
-
-    clangwrapper::Cursor *self = nullptr;
-
-    olua_to_object(L, 1, &self, "clang.Cursor");
-
-    // @getter clangwrapper::string visibilitySpelling()
-    clangwrapper::string ret = self->visibilitySpelling();
-    int num_ret = olua_push_string(L, ret);
-
-    olua_endinvoke(L);
-
-    return num_ret;
-}
-
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clangwrapper_Cursor(lua_State *L)
 {
@@ -3965,12 +4024,10 @@ OLUA_LIB int luaopen_clangwrapper_Cursor(lua_State *L)
     oluacls_func(L, "referenceNameRange", _clangwrapper_Cursor_referenceNameRange);
     oluacls_func(L, "shared_from_this", _clangwrapper_Cursor_shared_from_this);
     oluacls_func(L, "templateArgumentKind", _clangwrapper_Cursor_templateArgumentKind);
-    oluacls_func(L, "templateArgumentKindSpelling", _clangwrapper_Cursor_templateArgumentKindSpelling);
     oluacls_func(L, "templateArgumentUnsignedValue", _clangwrapper_Cursor_templateArgumentUnsignedValue);
     oluacls_func(L, "templateArgumentValue", _clangwrapper_Cursor_templateArgumentValue);
     oluacls_prop(L, "arguments", _clangwrapper_Cursor_arguments, nullptr);
     oluacls_prop(L, "availability", _clangwrapper_Cursor_availability, nullptr);
-    oluacls_prop(L, "availabilitySpelling", _clangwrapper_Cursor_availabilitySpelling, nullptr);
     oluacls_prop(L, "briefCommentText", _clangwrapper_Cursor_briefCommentText, nullptr);
     oluacls_prop(L, "canonical", _clangwrapper_Cursor_canonical, nullptr);
     oluacls_prop(L, "children", _clangwrapper_Cursor_children, nullptr);
@@ -3994,18 +4051,20 @@ OLUA_LIB int luaopen_clangwrapper_Cursor(lua_State *L)
     oluacls_prop(L, "isAnonymousRecordDecl", _clangwrapper_Cursor_isAnonymousRecordDecl, nullptr);
     oluacls_prop(L, "isAttribute", _clangwrapper_Cursor_isAttribute, nullptr);
     oluacls_prop(L, "isBitField", _clangwrapper_Cursor_isBitField, nullptr);
+    oluacls_prop(L, "isCXXAbstract", _clangwrapper_Cursor_isCXXAbstract, nullptr);
     oluacls_prop(L, "isCXXConvertingConstructor", _clangwrapper_Cursor_isCXXConvertingConstructor, nullptr);
     oluacls_prop(L, "isCXXCopyConstructor", _clangwrapper_Cursor_isCXXCopyConstructor, nullptr);
     oluacls_prop(L, "isCXXDefaultConstructor", _clangwrapper_Cursor_isCXXDefaultConstructor, nullptr);
     oluacls_prop(L, "isCXXFieldMutable", _clangwrapper_Cursor_isCXXFieldMutable, nullptr);
-    oluacls_prop(L, "isCXXMethoAbstract", _clangwrapper_Cursor_isCXXMethoAbstract, nullptr);
-    oluacls_prop(L, "isCXXMethoConst", _clangwrapper_Cursor_isCXXMethoConst, nullptr);
-    oluacls_prop(L, "isCXXMethoCopyAssignmentOperator", _clangwrapper_Cursor_isCXXMethoCopyAssignmentOperator, nullptr);
-    oluacls_prop(L, "isCXXMethoDeleted", _clangwrapper_Cursor_isCXXMethoDeleted, nullptr);
-    oluacls_prop(L, "isCXXMethoPureVirtual", _clangwrapper_Cursor_isCXXMethoPureVirtual, nullptr);
-    oluacls_prop(L, "isCXXMethoStatic", _clangwrapper_Cursor_isCXXMethoStatic, nullptr);
-    oluacls_prop(L, "isCXXMethoVirtual", _clangwrapper_Cursor_isCXXMethoVirtual, nullptr);
+    oluacls_prop(L, "isCXXMethodConst", _clangwrapper_Cursor_isCXXMethodConst, nullptr);
+    oluacls_prop(L, "isCXXMethodCopyAssignmentOperator", _clangwrapper_Cursor_isCXXMethodCopyAssignmentOperator, nullptr);
     oluacls_prop(L, "isCXXMethodDefaulted", _clangwrapper_Cursor_isCXXMethodDefaulted, nullptr);
+    oluacls_prop(L, "isCXXMethodDeleted", _clangwrapper_Cursor_isCXXMethodDeleted, nullptr);
+    oluacls_prop(L, "isCXXMethodExplicit", _clangwrapper_Cursor_isCXXMethodExplicit, nullptr);
+    oluacls_prop(L, "isCXXMethodMoveAssignmentOperator", _clangwrapper_Cursor_isCXXMethodMoveAssignmentOperator, nullptr);
+    oluacls_prop(L, "isCXXMethodPureVirtual", _clangwrapper_Cursor_isCXXMethodPureVirtual, nullptr);
+    oluacls_prop(L, "isCXXMethodStatic", _clangwrapper_Cursor_isCXXMethodStatic, nullptr);
+    oluacls_prop(L, "isCXXMethodVirtual", _clangwrapper_Cursor_isCXXMethodVirtual, nullptr);
     oluacls_prop(L, "isCXXMoveConstructor", _clangwrapper_Cursor_isCXXMoveConstructor, nullptr);
     oluacls_prop(L, "isDeclaration", _clangwrapper_Cursor_isDeclaration, nullptr);
     oluacls_prop(L, "isDefinition", _clangwrapper_Cursor_isDefinition, nullptr);
@@ -4030,10 +4089,8 @@ OLUA_LIB int luaopen_clangwrapper_Cursor(lua_State *L)
     oluacls_prop(L, "kind", _clangwrapper_Cursor_kind, nullptr);
     oluacls_prop(L, "kindSpelling", _clangwrapper_Cursor_kindSpelling, nullptr);
     oluacls_prop(L, "language", _clangwrapper_Cursor_language, nullptr);
-    oluacls_prop(L, "languageSpelling", _clangwrapper_Cursor_languageSpelling, nullptr);
     oluacls_prop(L, "lexicalParent", _clangwrapper_Cursor_lexicalParent, nullptr);
     oluacls_prop(L, "linkage", _clangwrapper_Cursor_linkage, nullptr);
-    oluacls_prop(L, "linkageSpelling", _clangwrapper_Cursor_linkageSpelling, nullptr);
     oluacls_prop(L, "mangling", _clangwrapper_Cursor_mangling, nullptr);
     oluacls_prop(L, "module", _clangwrapper_Cursor_getModule, nullptr);
     oluacls_prop(L, "name", _clangwrapper_Cursor_name, nullptr);
@@ -4050,18 +4107,15 @@ OLUA_LIB int luaopen_clangwrapper_Cursor(lua_State *L)
     oluacls_prop(L, "sourceRange", _clangwrapper_Cursor_sourceRange, nullptr);
     oluacls_prop(L, "specializedTemplate", _clangwrapper_Cursor_specializedTemplate, nullptr);
     oluacls_prop(L, "storageClass", _clangwrapper_Cursor_storageClass, nullptr);
-    oluacls_prop(L, "storageClassSpelling", _clangwrapper_Cursor_storageClassSpelling, nullptr);
     oluacls_prop(L, "templateArgumentTypes", _clangwrapper_Cursor_templateArgumentTypes, nullptr);
     oluacls_prop(L, "templateKind", _clangwrapper_Cursor_templateKind, nullptr);
     oluacls_prop(L, "templateKindSpelling", _clangwrapper_Cursor_templateKindSpelling, nullptr);
     oluacls_prop(L, "tlsKind", _clangwrapper_Cursor_tlsKind, nullptr);
-    oluacls_prop(L, "tlsKindSpelling", _clangwrapper_Cursor_tlsKindSpelling, nullptr);
     oluacls_prop(L, "translationUnit", _clangwrapper_Cursor_translationUnit, nullptr);
     oluacls_prop(L, "type", _clangwrapper_Cursor_type, nullptr);
     oluacls_prop(L, "underlyingType", _clangwrapper_Cursor_underlyingType, nullptr);
     oluacls_prop(L, "varDeclInitializer", _clangwrapper_Cursor_varDeclInitializer, nullptr);
     oluacls_prop(L, "visibility", _clangwrapper_Cursor_visibility, nullptr);
-    oluacls_prop(L, "visibilitySpelling", _clangwrapper_Cursor_visibilitySpelling, nullptr);
 
     return 1;
 }
@@ -4473,7 +4527,7 @@ static int _clangwrapper_TranslationUnit_diagnosticSetFromTU(lua_State *L)
 
     // @getter std::set<std::shared_ptr<clangwrapper::Diagnostic>> diagnosticSetFromTU()
     std::set<std::shared_ptr<clangwrapper::Diagnostic>> ret = self->diagnosticSetFromTU();
-    int num_ret = olua_push_vector<std::shared_ptr<clangwrapper::Diagnostic>>(L, ret, [L](std::shared_ptr<clangwrapper::Diagnostic> &arg1) {
+    int num_ret = olua_push_array<std::shared_ptr<clangwrapper::Diagnostic>>(L, ret, [L](std::shared_ptr<clangwrapper::Diagnostic> &arg1) {
         olua_push_object(L, &arg1, "clang.Diagnostic");
     });
 
@@ -4492,7 +4546,7 @@ static int _clangwrapper_TranslationUnit_diagnostics(lua_State *L)
 
     // @getter std::vector<std::shared_ptr<clangwrapper::Diagnostic>> diagnostics()
     std::vector<std::shared_ptr<clangwrapper::Diagnostic>> ret = self->diagnostics();
-    int num_ret = olua_push_vector<std::shared_ptr<clangwrapper::Diagnostic>>(L, ret, [L](std::shared_ptr<clangwrapper::Diagnostic> &arg1) {
+    int num_ret = olua_push_array<std::shared_ptr<clangwrapper::Diagnostic>>(L, ret, [L](std::shared_ptr<clangwrapper::Diagnostic> &arg1) {
         olua_push_object(L, &arg1, "clang.Diagnostic");
     });
 
@@ -4618,7 +4672,7 @@ static int _clangwrapper_Index_parse$1(lua_State *L)
 
     olua_to_object(L, 1, &self, "clang.Index");
     olua_check_string(L, 2, &arg1);
-    olua_check_vector<std::string>(L, 3, arg2, [L](std::string *arg1) {
+    olua_check_array<std::string>(L, 3, arg2, [L](std::string *arg1) {
         olua_check_string(L, -1, arg1);
     });
     olua_check_integer(L, 4, &arg3);
@@ -4642,7 +4696,7 @@ static int _clangwrapper_Index_parse$2(lua_State *L)
 
     olua_to_object(L, 1, &self, "clang.Index");
     olua_check_string(L, 2, &arg1);
-    olua_check_vector<std::string>(L, 3, arg2, [L](std::string *arg1) {
+    olua_check_array<std::string>(L, 3, arg2, [L](std::string *arg1) {
         olua_check_string(L, -1, arg1);
     });
 
@@ -4660,14 +4714,14 @@ static int _clangwrapper_Index_parse(lua_State *L)
     int num_args = lua_gettop(L) - 1;
 
     if (num_args == 2) {
-        // if ((olua_is_string(L, 2)) && (olua_is_vector(L, 3))) {
+        // if ((olua_is_string(L, 2)) && (olua_is_array(L, 3))) {
             // std::shared_ptr<clangwrapper::TranslationUnit> parse(const std::string &path, const std::vector<std::string> args, @optional unsigned int options)
             return _clangwrapper_Index_parse$2(L);
         // }
     }
 
     if (num_args == 3) {
-        // if ((olua_is_string(L, 2)) && (olua_is_vector(L, 3)) && (olua_is_integer(L, 4))) {
+        // if ((olua_is_string(L, 2)) && (olua_is_array(L, 3)) && (olua_is_integer(L, 4))) {
             // std::shared_ptr<clangwrapper::TranslationUnit> parse(const std::string &path, const std::vector<std::string> args, @optional unsigned int options)
             return _clangwrapper_Index_parse$1(L);
         // }
