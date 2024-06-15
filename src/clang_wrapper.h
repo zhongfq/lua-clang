@@ -155,6 +155,9 @@ private:
     CXFile _value;
 };
 
+/**
+ * @oluasee CXType
+ */
 class Type : public IndexError, public std::enable_shared_from_this<Type>
 {
 public:
@@ -374,7 +377,7 @@ private:
 };
 
 /**
- * The Cursor class represents a reference to an element within the AST
+ * @oluasee CXCursor
  */
 class Cursor : public IndexError, public std::enable_shared_from_this<Cursor>
 {
@@ -950,6 +953,9 @@ private:
     CXModule _value;
 };
 
+/**
+ * @oluasee CXTranslationUnit
+ */
 class TranslationUnit : public IndexError, public std::enable_shared_from_this<TranslationUnit>
 {
 public:
@@ -978,6 +984,9 @@ private:
 };
 
 
+/**
+ * @oluasee CXIndex
+ */
 class Index : public IndexError, public std::enable_shared_from_this<Index>
 {
 public:
