@@ -162,3 +162,86 @@ target_include_directories(liblua54 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/lua54)
 add_executable(luac54 ${LUA54SRC} lua54/luac.c)
 add_executable(lua54 lua54/lua.c)
 target_link_libraries(lua54 liblua54)
+
+# -----------------------------------------------------------------------------
+# lua55
+# -----------------------------------------------------------------------------
+set(LUA55SRC
+    lua55/lapi.c
+    lua55/lapi.h   
+    lua55/lauxlib.c
+    lua55/lauxlib.h
+    lua55/lbaselib.c
+    lua55/lcode.c
+    lua55/lcode.h  
+    lua55/lcorolib.c
+    lua55/lctype.c
+    lua55/lctype.h 
+    lua55/ldblib.c
+    lua55/ldebug.c
+    lua55/ldebug.h 
+    lua55/ldo.c
+    lua55/ldo.h    
+    lua55/ldump.c
+    lua55/lfunc.c
+    lua55/lfunc.h  
+    lua55/lgc.c
+    lua55/lgc.h    
+    lua55/linit.c
+    lua55/liolib.c
+    lua55/llex.c
+    lua55/llex.h   
+    lua55/llimits.h
+    lua55/lmathlib.c
+    lua55/lmem.c
+    lua55/lmem.h    
+    lua55/loadlib.c
+    lua55/lobject.c
+    lua55/lobject.h 
+    lua55/lopcodes.c
+    lua55/lopcodes.h
+    lua55/loslib.c
+    lua55/lparser.c
+    lua55/lparser.h 
+    lua55/lprefix.h 
+    lua55/lstate.c
+    lua55/lstate.h  
+    lua55/lstring.c
+    lua55/lstring.h 
+    lua55/lstrlib.c
+    lua55/ltable.c
+    lua55/ltable.h
+    lua55/ltablib.c
+    lua55/ltm.c
+    lua55/ltm.h
+    lua55/lua.h
+    lua55/luaconf.h
+    lua55/lualib.h
+    lua55/lundump.c
+    lua55/lundump.h
+    lua55/lutf8lib.c
+    lua55/lvm.c
+    lua55/lvm.h
+    lua55/lzio.c
+    lua55/lzio.h
+)
+
+if(WIN32)
+    add_library(liblua55 SHARED ${LUA55SRC})
+    target_compile_definitions(liblua55 PRIVATE LUA_BUILD_AS_DLL)
+else()
+    add_library(liblua55 STATIC ${LUA55SRC})
+    target_link_libraries(liblua55 PUBLIC readline)
+    if (NOT APPLE)
+        target_link_libraries(liblua55 PUBLIC m dl -Wl,-E)
+        target_compile_definitions(liblua55 PUBLIC LUA_USE_LINUX)
+    else()
+        target_compile_definitions(liblua55 PUBLIC LUA_USE_MACOSX)
+    endif()
+endif()
+
+target_include_directories(liblua55 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/lua55)
+
+add_executable(luac55 ${LUA55SRC} lua55/luac.c)
+add_executable(lua55 lua55/lua.c)
+target_link_libraries(lua55 liblua55)

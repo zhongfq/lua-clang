@@ -11,3 +11,6 @@
 [submodule "lua54"]
 	path = lua54
 	url = git@github.com:zhongfq/lua.git
+[submodule "lua55"]
+	path = lua55
+	url = git@github.com:zhongfq/lua.git

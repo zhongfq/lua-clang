@@ -75,3 +75,24 @@ endif()
 
 target_link_libraries(luaclang54 libclang_static)
 
+# luaclang55
+add_library(luaclang55 MODULE ${SRC})
+set_target_properties(luaclang55 PROPERTIES 
+    PREFIX ""
+    OUTPUT_NAME clang55
+)
+target_include_directories(luaclang55
+  PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/lua55
+    ${CMAKE_CURRENT_SOURCE_DIR}/llvm-project/clang/include
+)
+
+if(APPLE)
+    target_link_options(luaclang55 PUBLIC -bundle -undefined dynamic_lookup)
+elseif(WIN32)
+    target_link_libraries(luaclang55 liblua55)
+    set_target_properties(libclang_static PROPERTIES OUTPUT_NAME libclang_static)
+endif()
+
+target_link_libraries(luaclang55 libclang_static)
