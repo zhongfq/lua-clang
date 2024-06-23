@@ -36,7 +36,8 @@ set(SRC
 add_library(luaclang53 MODULE ${SRC})
 set_target_properties(luaclang53 PROPERTIES 
     PREFIX ""
-    OUTPUT_NAME clang53
+    LIBRARY_OUTPUT_DIRECTORY "lua53"
+    OUTPUT_NAME clang
 )
 target_include_directories(luaclang53
   PUBLIC
@@ -57,7 +58,8 @@ target_link_libraries(luaclang53 libclang_static)
 add_library(luaclang54 MODULE ${SRC})
 set_target_properties(luaclang54 PROPERTIES 
     PREFIX ""
-    OUTPUT_NAME clang54
+    LIBRARY_OUTPUT_DIRECTORY "lua54"
+    OUTPUT_NAME clang
 )
 target_include_directories(luaclang54
   PUBLIC
@@ -79,7 +81,8 @@ target_link_libraries(luaclang54 libclang_static)
 add_library(luaclang55 MODULE ${SRC})
 set_target_properties(luaclang55 PROPERTIES 
     PREFIX ""
-    OUTPUT_NAME clang55
+    LIBRARY_OUTPUT_DIRECTORY "lua55"
+    OUTPUT_NAME clang
 )
 target_include_directories(luaclang55
   PUBLIC
