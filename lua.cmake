@@ -71,7 +71,7 @@ if(WIN32)
         ARCHIVE_OUTPUT_DIRECTORY "lua53"
         RUNTIME_OUTPUT_DIRECTORY "lua53"
         LIBRARY_OUTPUT_NAME liblua
-        RUNTIME_OUTPUT_NAME lua
+        RUNTIME_OUTPUT_NAME lua53
     )
 else()
     add_library(liblua53 STATIC ${LUA53SRC})
@@ -90,7 +90,7 @@ add_executable(luac53 ${LUA53SRC} lua53/luac.c)
 add_executable(lua53 lua53/lua.c)
 set_target_properties(lua53 PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "lua53"
-    OUTPUT_NAME lua)
+    OUTPUT_NAME lua53)
 target_link_libraries(lua53 liblua53)
 
 set(LUA54SRC
@@ -161,7 +161,7 @@ if(WIN32)
         ARCHIVE_OUTPUT_DIRECTORY "lua54"
         RUNTIME_OUTPUT_DIRECTORY "lua54"
         LIBRARY_OUTPUT_NAME liblua
-        RUNTIME_OUTPUT_NAME lua
+        RUNTIME_OUTPUT_NAME lua54
     )
 else()
     add_library(liblua54 STATIC ${LUA54SRC})
@@ -180,7 +180,7 @@ add_executable(luac54 ${LUA54SRC} lua54/luac.c)
 add_executable(lua54 lua54/lua.c)
 set_target_properties(lua54 PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "lua54"
-    OUTPUT_NAME lua)
+    OUTPUT_NAME lua54)
 target_link_libraries(lua54 liblua54)
 
 # -----------------------------------------------------------------------------
