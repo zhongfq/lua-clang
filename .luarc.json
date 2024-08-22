@@ -1,0 +1,22 @@
+{
+  "diagnostics.disable": ["redundant-return-value"],
+  "workspace.library": ["olua"],
+  "diagnostics.globals": [
+    "api_dir",
+    "autoconf",
+    "clang",
+    "codeblock",
+    "entry",
+    "excludetype",
+    "headers",
+    "import",
+    "luacls",
+    "luaopen",
+    "macro",
+    "olua",
+    "output_dir",
+    "typeconf",
+    "typedef",
+    "typeonly"
+  ]
+}

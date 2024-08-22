@@ -6,7 +6,7 @@
 
 #include <memory>
 
-#define LUACLANG_VERSION "2.2"
+#define LUACLANG_VERSION "2.3"
 
 namespace clangwrapper {
 
