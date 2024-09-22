@@ -6,7 +6,7 @@
 
 #include <memory>
 
-#define LUACLANG_VERSION "2.3"
+#define LUACLANG_VERSION "2.4"
 
 namespace clangwrapper {
 
@@ -25,6 +25,8 @@ using TLSKind = CXTLSKind;
 using TypeKind = CXTypeKind;
 using TypeNullabilityKind = CXTypeNullabilityKind;
 using VisibilityKind = CXVisibilityKind;
+using TranslationUnitFlags = CXTranslationUnit_Flags;
+using ErrorCode = CXErrorCode;
 
 class TranslationUnit;
 class Cursor;
@@ -66,7 +68,7 @@ struct string {
     string(const char *value, size_t len) {
         if (value) {
             isNull = false;
-            data = std::string(value, len);
+            data.assign(value, len);
         }
     }
 };
@@ -138,17 +140,17 @@ public:
     }
     
     /** @oluasee clang_getFileName */
-    OLUA_GETTER string fileName() {
+    OLUA_GETTER string name() {
         return clang_getFileName(_value);
     }
 
     /** @oluasee clang_getFileTime */
-    OLUA_GETTER time_t fileTime() {
+    OLUA_GETTER time_t time() {
         return clang_getFileTime(_value);
     }
     
     /** @oluasee clang_File_tryGetRealPathName */
-    string tryGetRealPathName() {
+    OLUA_GETTER string realPathName() {
         return clang_File_tryGetRealPathName(_value);
     }
 private:
@@ -189,16 +191,16 @@ public:
     }
 
     /** @oluasee clang_isConstQualifiedType */
-    OLUA_GETTER bool isConstQualified() {
+    bool isConstQualified() {
         return clang_isConstQualifiedType(_value);
     }
     /** @oluasee clang_isVolatileQualifiedType */
-    OLUA_GETTER bool isVolatileQualified() {
+    bool isVolatileQualified() {
         return clang_isVolatileQualifiedType(_value);
     }
 
     /** @oluasee clang_isRestrictQualifiedType */
-    OLUA_GETTER bool isRestrictQualified() {
+    bool isRestrictQualified() {
         return clang_isRestrictQualifiedType(_value);
     }
 
@@ -248,7 +250,7 @@ public:
     }
 
     /** @oluasee clang_isFunctionTypeVariadic */
-    OLUA_GETTER bool isFunctionTypeVariadic() {
+    bool isFunctionTypeVariadic() {
         return clang_isFunctionTypeVariadic(_value);
     }
 
@@ -267,13 +269,18 @@ public:
         return arr;
     }
 
+    /** @oluasee clang_getNumArgTypes */
+    OLUA_GETTER int numArgTypes() {
+        return clang_getNumArgTypes(_value);
+    }
+
     /** @oluasee clang_getArgType */
     std::shared_ptr<Type> getArgType(unsigned int i) {
         return makeType(clang_getArgType(_value, i));
     }
 
     /** @oluasee clang_isPODType */
-    OLUA_GETTER bool isPOD() {
+    bool isPOD() {
         return clang_isPODType(_value);
     }
 
@@ -297,7 +304,7 @@ public:
     }
     
     /** @oluasee clang_Type_isTransparentTagTypedef */
-    OLUA_GETTER bool isTransparentTagTypedef() {
+    bool isTransparentTagTypedef() {
         return clang_Type_isTransparentTagTypedef(_value);
     }
 
@@ -337,7 +344,7 @@ public:
         return makeType(clang_Type_getValueType(_value));
     }
     /** @oluasee clang_Type_getOffsetOf */
-    long long offsetOf(const char *field) {
+    long long getOffsetOf(const char *field) {
         return clang_Type_getOffsetOf(_value, field);
     }
 
@@ -351,6 +358,12 @@ public:
         return arr;
     }
 
+    /** @oluasee clang_Type_getNumTemplateArguments */
+    OLUA_GETTER int numTemplateArguments() {
+        return clang_Type_getNumTemplateArguments(_value);
+    }
+
+    /** @oluasee clang_Type_getTemplateArgumentAsType */
     std::shared_ptr<Type> getTemplateArgument(unsigned int i) {
         return makeType(clang_Type_getTemplateArgumentAsType(_value, i));
     }
@@ -418,67 +431,67 @@ public:
     }
 
     /** @oluasee clang_Cursor_isNull */
-    OLUA_GETTER bool isNull() {
+    bool isNull() {
         return clang_Cursor_isNull(_value);
     }
 
     /** @oluasee clang_hashCursor */
-    unsigned hashCursor() {
+    OLUA_GETTER unsigned hash() {
         return clang_hashCursor(_value);
     }
 
     /** @oluasee clang_isDeclaration */
-    OLUA_GETTER bool isDeclaration() {
+    bool isDeclaration() {
         return clang_isDeclaration(clang_getCursorKind(_value));
     }
 
     /** @oluasee clang_isInvalidDeclaration */
-    OLUA_GETTER bool isInvalidDeclaration() {
+    bool isInvalidDeclaration() {
         return clang_isInvalidDeclaration(_value);
     }
 
     /** @oluasee clang_isReference */
-    OLUA_GETTER bool isReference() {
+    bool isReference() {
         return clang_isReference(clang_getCursorKind(_value));
     }
 
     /** @oluasee clang_isExpression */
-    OLUA_GETTER bool isExpression() {
+    bool isExpression() {
         return clang_isExpression(clang_getCursorKind(_value));
     }
 
     /** @oluasee clang_isStatement */
-    OLUA_GETTER bool isStatement() {
+    bool isStatement() {
         return clang_isStatement(clang_getCursorKind(_value));
     }
 
     /** @oluasee clang_isAttribute */
-    OLUA_GETTER bool isAttribute() {
+    bool isAttribute() {
         return clang_isAttribute(clang_getCursorKind(_value));
     }
 
     /** @oluasee clang_Cursor_hasAttrs */
-    OLUA_GETTER bool hasAttrs() {
+    bool hasAttrs() {
         return clang_Cursor_hasAttrs(_value);
     }
 
     /** @oluasee clang_isInvalid */
-    OLUA_GETTER bool isInvalid() {
+    bool isInvalid() {
         return clang_isInvalid(clang_getCursorKind(_value));
     }
 
     /** @oluasee clang_isTranslationUnit */
-    OLUA_GETTER bool isTranslationUnit() {
+    bool isTranslationUnit() {
         return clang_isTranslationUnit(clang_getCursorKind(_value));
     }
 
     /** @oluasee clang_isPreprocessing */
-    OLUA_GETTER bool isPreprocessing() {
+    bool isPreprocessing() {
         return clang_isPreprocessing(clang_getCursorKind(_value));
     }
 
     /** @oluasee clang_isUnexposed */
-    OLUA_GETTER bool isUnexposed() {
+    bool isUnexposed() {
         return clang_isUnexposed(clang_getCursorKind(_value));
     }
 
@@ -542,6 +555,11 @@ public:
         return makeCursor(clang_getCursorLexicalParent(_value));
     }
 
+    /** @oluasee clang_getCursorUSR */
+    OLUA_GETTER string usr() {
+        return clang_getCursorUSR(_value);
+    }
+
     /** @oluasee clang_getIncludedFile */
     OLUA_GETTER std::shared_ptr<File> includedFile() {
         return makeFile(clang_getIncludedFile(_value));
@@ -569,7 +587,7 @@ public:
     }
 
     /** @oluasee clang_getTypedefDeclUnderlyingType */
-    OLUA_GETTER std::shared_ptr<Type> underlyingType() {
+    OLUA_GETTER std::shared_ptr<Type> typedefDeclUnderlyingType() {
         return makeType(clang_getTypedefDeclUnderlyingType(_value));
     }
 
@@ -614,32 +632,32 @@ public:
     }
 
     /** @oluasee clang_Cursor_getTemplateArgumentValue */
-    TemplateArgumentKind templateArgumentKind(unsigned index) {
+    TemplateArgumentKind getTemplateArgumentKind(unsigned index) {
         return clang_Cursor_getTemplateArgumentKind(_value, index);
     }
 
     /** @oluasee clang_Cursor_getTemplateArgumentValue */
-    long long templateArgumentValue(unsigned index) {
+    long long getTemplateArgumentValue(unsigned index) {
         return clang_Cursor_getTemplateArgumentValue(_value, index);
     }
 
     /** @oluasee clang_Cursor_getTemplateArgumentUnsignedValue */
-    unsigned long long templateArgumentUnsignedValue(unsigned index) {
+    unsigned long long getTemplateArgumentUnsignedValue(unsigned index) {
         return clang_Cursor_getTemplateArgumentUnsignedValue(_value, index);
     }
 
     /** @oluasee clang_Cursor_isMacroFunctionLike */
-    OLUA_GETTER bool isMacroFunctionLike() {
+    bool isMacroFunctionLike() {
         return clang_Cursor_isMacroFunctionLike(_value);
     }
 
     /** @oluasee clang_Cursor_isMacroBuiltin */
-    OLUA_GETTER bool isMacroBuiltin() {
+    bool isMacroBuiltin() {
         return clang_Cursor_isMacroBuiltin(_value);
     }
 
     /** @oluasee clang_Cursor_isFunctionInlined */
-    OLUA_GETTER bool isFunctionInlined() {
+    bool isFunctionInlined() {
         return clang_Cursor_isFunctionInlined(_value);
     }
 
@@ -659,32 +677,32 @@ public:
     }
 
     /** @oluasee clang_Cursor_isAnonymous */
-    OLUA_GETTER bool isAnonymous() {
+    bool isAnonymous() {
         return clang_Cursor_isAnonymous(_value);
     }
 
     /** @oluasee clang_Cursor_isAnonymousRecordDecl */
-    OLUA_GETTER bool isAnonymousRecordDecl() {
+    bool isAnonymousRecordDecl() {
         return clang_Cursor_isAnonymousRecordDecl(_value);
     }
 
     /** @oluasee clang_Cursor_isInlineNamespace */
-    OLUA_GETTER bool isInlineNamespace() {
+    bool isInlineNamespace() {
         return clang_Cursor_isInlineNamespace(_value);
     }
 
     /** @oluasee clang_Cursor_isBitField */
-    OLUA_GETTER bool isBitField() {
+    bool isBitField() {
         return clang_Cursor_isBitField(_value);
     }
 
     /** @oluasee clang_isVirtualBase */
-    OLUA_GETTER bool isVirtualBase() {
+    bool isVirtualBase() {
         return clang_isVirtualBase(_value);
     }
 
     /** Is this a deprecated member */
-    OLUA_GETTER bool isDeprecated() {
+    bool isDeprecated() {
         bool ret = false;
         CXString pretty = clang_getCursorPrettyPrinted(_value, NULL);
         const char *str = clang_getCString(pretty);
@@ -722,11 +740,6 @@ public:
         }
         return arr;
     }
-
-    /** @oluasee clang_getIBOutletCollectionType */
-    OLUA_GETTER std::shared_ptr<Type> ibOutletCollectionType() {
-        return makeType(clang_getIBOutletCollectionType(_value));
-    }
     
     /** @oluasee clang_visitChildren */
     OLUA_GETTER std::vector<std::shared_ptr<Cursor>> children() {
@@ -736,7 +749,7 @@ public:
     }
 
     /** @oluasee clang_Cursor_getSpellingNameRange */
-    SourceRange nameRange(unsigned pieceIndex, unsigned options) {
+    SourceRange getNameRange(unsigned pieceIndex, unsigned options) {
         CXSourceRange range = clang_Cursor_getSpellingNameRange(_value, pieceIndex, options);
         return getRange(range);
     }
@@ -762,7 +775,7 @@ public:
     }
 
     /** @oluasee clang_isCursorDefinition */
-    OLUA_GETTER bool isDefinition() {
+    bool isDefinition() {
         return clang_isCursorDefinition(_value);
     }
 
@@ -782,7 +795,7 @@ public:
     }
 
     /** @oluasee clang_Cursor_isVariadic */
-    OLUA_GETTER bool isVariadic() {
+    bool isVariadic() {
         return clang_Cursor_isVariadic(_value);
     }
 
@@ -819,87 +832,87 @@ public:
     }
 
     /** @oluasee clang_Cursor_getModule */
-    std::shared_ptr<Module> getModule() {
+    OLUA_GETTER std::shared_ptr<Module> getModule() {
         return makeModule(clang_Cursor_getModule(_value));
     }
 
     /** @oluasee clang_CXXConstructor_isConvertingConstructor */
-    OLUA_GETTER bool isCXXConvertingConstructor() {
+    bool isCXXConvertingConstructor() {
         return clang_CXXConstructor_isConvertingConstructor(_value);
     }
 
     /** @oluasee clang_CXXConstructor_isCopyConstructor */
-    OLUA_GETTER bool isCXXCopyConstructor() {
+    bool isCXXCopyConstructor() {
         return clang_CXXConstructor_isCopyConstructor(_value);
     }
 
     /** @oluasee clang_CXXConstructor_isDefaultConstructor */
-    OLUA_GETTER bool isCXXDefaultConstructor() {
+    bool isCXXDefaultConstructor() {
         return clang_CXXConstructor_isDefaultConstructor(_value);
     }
 
     /** @oluasee clang_CXXConstructor_isMoveConstructor */
-    OLUA_GETTER bool isCXXMoveConstructor() {
+    bool isCXXMoveConstructor() {
         return clang_CXXConstructor_isMoveConstructor(_value);
     }
 
     /** @oluasee clang_CXXField_isMutable */
-    OLUA_GETTER bool isCXXFieldMutable() {
+    bool isCXXMutableField() {
         return clang_CXXField_isMutable(_value);
     }
 
     /** @oluasee clang_CXXMethod_isDefaulted */
-    OLUA_GETTER bool isCXXMethodDefaulted() {
+    bool isCXXDefaultedMethod() {
         return clang_CXXMethod_isDefaulted(_value);
     }
 
     /** @oluasee clang_CXXMethod_isDeleted */
-    OLUA_GETTER bool isCXXMethodDeleted() {
+    bool isCXXDeletedMethod() {
         return clang_CXXMethod_isDeleted(_value);
     }
 
     /** @oluasee clang_CXXMethod_isPureVirtual */
-    OLUA_GETTER bool isCXXMethodPureVirtual() {
+    bool isCXXPureVirtualMethod() {
         return clang_CXXMethod_isPureVirtual(_value);
     }
 
     /** @oluasee clang_CXXMethod_isStatic */
-    OLUA_GETTER bool isCXXMethodStatic() {
+    bool isCXXStaticMethod() {
         return clang_CXXMethod_isStatic(_value);
     }
 
     /** @oluasee clang_CXXMethod_isVirtual */
-    OLUA_GETTER bool isCXXMethodVirtual() {
+    bool isCXXVirtualMethod() {
         return clang_CXXMethod_isVirtual(_value);
     }
 
     /** @oluasee clang_CXXMethod_isCopyAssignmentOperator */
-    OLUA_GETTER bool isCXXMethodCopyAssignmentOperator() {
+    bool isCXXCopyAssignmentOperator() {
         return clang_CXXMethod_isCopyAssignmentOperator(_value);
     }
 
     /** @oluasee clang_CXXMethod_isMoveAssignmentOperator */
-    OLUA_GETTER bool isCXXMethodMoveAssignmentOperator() {
+    bool isCXXMoveAssignmentOperator() {
         return clang_CXXMethod_isMoveAssignmentOperator(_value);
     }
 
     /** @oluasee clang_CXXMethod_isConst */
-    OLUA_GETTER bool isCXXMethodConst() {
+    bool isCXXConstMethod() {
         return clang_CXXMethod_isConst(_value);
     }
 
     /** @oluasee clang_CXXMethod_isExplicit */
-    OLUA_GETTER bool isCXXMethodExplicit() {
+    bool isCXXExplicitMethod() {
         return clang_CXXMethod_isExplicit(_value);
     }
 
     /** @oluasee clang_CXXRecord_isAbstract */
-    OLUA_GETTER bool isCXXAbstract() {
+    bool isCXXAbstract() {
         return clang_CXXRecord_isAbstract(_value);
     }
 
     /** @oluasee clang_EnumDecl_isScoped */
-    OLUA_GETTER bool isEnumDeclScoped() {
+    bool isScopedEnumDecl() {
         return clang_EnumDecl_isScoped(_value);
     }
 
@@ -919,7 +932,7 @@ public:
     }
 
     /** @oluasee clang_getCursorReferenceNameRange */
-    SourceRange referenceNameRange(unsigned pieceIndex, unsigned options) {
+    SourceRange getReferenceNameRange(unsigned pieceIndex, unsigned options) {
         CXSourceRange range = clang_getCursorReferenceNameRange(_value, pieceIndex, options);
         return getRange(range);
     }
@@ -944,11 +957,30 @@ public:
     OLUA_EXCLUDE Module(CXModule value);
     ~Module();
     
-    OLUA_GETTER std::shared_ptr<File> astFile();
-    OLUA_GETTER std::shared_ptr<Module> parent();
-    OLUA_GETTER string name();
-    OLUA_GETTER string fullName();
-    OLUA_GETTER int isSystem();
+    /** @oluasee clang_Module_getASTFile */
+    OLUA_GETTER std::shared_ptr<File> astFile(){
+        return makeFile(clang_Module_getASTFile(_value));
+    }
+
+    /** @oluasee clang_Module_getParent */
+    OLUA_GETTER std::shared_ptr<Module> parent() {
+        return makeModule(clang_Module_getParent(_value));
+    }
+
+    /** @oluasee clang_Module_getName */
+    OLUA_GETTER string name() {
+        return clang_Module_getName(_value);
+    }
+
+    /** @oluasee clang_Module_getFullName */
+    OLUA_GETTER string fullName() {
+        return clang_Module_getFullName(_value);
+    }
+
+    /** @oluasee clang_Module_isSystem */
+    int isSystem() {
+        return clang_Module_isSystem(_value);
+    }
 private:
     CXModule _value;
 };
@@ -962,21 +994,91 @@ public:
     OLUA_EXCLUDE TranslationUnit(CXTranslationUnit value, bool owner);
     ~TranslationUnit();
     
-    OLUA_GETTER string name();
-    OLUA_GETTER std::shared_ptr<Cursor> cursor();
+    /** @oluasee clang_getTranslationUnitSpelling */
+    OLUA_GETTER string name() {
+        return clang_getTranslationUnitSpelling(_value);
+    }
+
+    /** @oluasee clang_getTranslationUnitCursor */
+    OLUA_GETTER std::shared_ptr<Cursor> cursor() {
+        CXCursor cur = clang_getTranslationUnitCursor(_value);
+        _cursor = makeCursor(cur);
+        return _cursor->shared_from_this();
+    }
     
-    bool isFileMultipleIncludeGuarded(File *f);
-    std::shared_ptr<File> getFile(const std::string &path);
-    string getFileContents(File *f);
-    OLUA_GETTER std::vector<std::shared_ptr<Diagnostic>> diagnostics();
-    OLUA_GETTER std::set<std::shared_ptr<Diagnostic>> diagnosticSetFromTU();
-    std::shared_ptr<Module> moduleForFile(const std::shared_ptr<File> &file);
-    unsigned numTopLevelHeaders(const std::shared_ptr<Module> &m);
-    std::shared_ptr<File> topLevelHeader(const std::shared_ptr<Module> &m, unsigned index);
-    unsigned defaultSaveOptions();
-    int saveTranslationUnit(const std::string &path, unsigned options);
-    unsigned suspendTranslationUnit();
-    unsigned defaultReparseOptions();
+    /** @oluasee clang_isFileMultipleIncludeGuarded */
+    bool isFileMultipleIncludeGuarded(File *f) {
+        return clang_isFileMultipleIncludeGuarded(_value, f->_value);
+    }
+
+    /** @oluasee clang_getFile */
+    std::shared_ptr<File> getFile(const std::string &path) {
+        return makeFile(clang_getFile(_value, path.c_str()));
+    }
+
+    /** @oluasee clang_getFileContents */
+    string getFileContents(File *f) {
+        size_t len;
+        const char *data = clang_getFileContents(_value, f->_value, &len);
+        return string(data, len);
+    }
+
+    /** @oluasee clang_getFileUniqueID */
+    OLUA_GETTER std::vector<std::shared_ptr<Diagnostic>> diagnostics() {
+        std::vector<std::shared_ptr<Diagnostic>> arr;
+        int n = clang_getNumDiagnostics(_value);
+        for (int i = 0; i < n; i++) {
+            arr.push_back(makeDiagnostic(clang_getDiagnostic(_value, i)));
+        }
+        return arr;
+    }
+    
+    /** @oluasee clang_getDiagnosticInSet */
+    OLUA_GETTER std::set<std::shared_ptr<Diagnostic>> diagnosticSetFromTU() {
+         std::set<std::shared_ptr<Diagnostic>> arr;
+        CXDiagnosticSet diags = clang_getDiagnosticSetFromTU(_value);
+        int n = clang_getNumDiagnosticsInSet(diags);
+        for (int i = 0; i < n; i++) {
+            arr.insert(makeDiagnostic(clang_getDiagnosticInSet(diags, i)));
+        }
+        return arr;
+    }
+
+    /** @oluasee clang_getModuleForFile */
+    std::shared_ptr<Module> moduleForFile(const std::shared_ptr<File> &file) {
+        return makeModule(clang_getModuleForFile(_value, file->_value));
+    }
+
+    /** @oluasee clang_Module_getNumTopLevelHeaders */
+    unsigned numTopLevelHeaders(const std::shared_ptr<Module> &m) {
+        return clang_Module_getNumTopLevelHeaders(_value, m->_value);
+    }
+
+    /** @oluasee clang_Module_getTopLevelHeader */
+    std::shared_ptr<File> topLevelHeader(const std::shared_ptr<Module> &m, unsigned index)
+    {
+        return makeFile(clang_Module_getTopLevelHeader(_value, m->_value, index));
+    }
+
+    /** @oluasee clang_defaultSaveOptions */
+    OLUA_GETTER unsigned defaultSaveOptions() {
+        return clang_defaultSaveOptions(_value);
+    }
+
+    /** @oluasee clang_saveTranslationUnit */
+    int saveTranslationUnit(const std::string &path, unsigned options) {
+        return clang_saveTranslationUnit(_value, path.c_str(), options);
+    }
+
+    /** @oluasee clang_suspendTranslationUnit */
+    OLUA_GETTER unsigned suspendTranslationUnit() {
+        return clang_suspendTranslationUnit(_value);
+    }
+
+    /** @oluasee clang_defaultReparseOptions */
+    OLUA_GETTER unsigned defaultReparseOptions() {
+        return clang_defaultReparseOptions(_value);
+    }
 private:
     CXTranslationUnit _value;
     std::shared_ptr<Cursor> _cursor;
@@ -1002,9 +1104,20 @@ public:
     /** @oluasee clang_parseTranslationUnit */
     std::shared_ptr<TranslationUnit> parse(const std::string &path, const std::vector<std::string> args, unsigned int options = (unsigned int)CXTranslationUnit_SkipFunctionBodies);
     
-    void setGlobalOptions(unsigned options);
-    unsigned getGlobalOptions();
-    void setInvocationEmissionPathOption(const std::string &path);
+    /** @oluasee clang_CXIndex_setGlobalOptions */
+    OLUA_SETTER void globalOptions(unsigned options) {
+        clang_CXIndex_setGlobalOptions(_value, options);    
+    }
+
+    /** @oluasee clang_CXIndex_getGlobalOptions */
+    OLUA_GETTER unsigned globalOptions() {
+        return clang_CXIndex_getGlobalOptions(_value);
+    }
+
+    /** @oluasee clang_CXIndex_setInvocationEmissionPathOption */
+    void setInvocationEmissionPathOption(const std::string &path) {
+        clang_CXIndex_setInvocationEmissionPathOption(_value, path.c_str());
+    }
 private:
     CXIndex _value;
 };

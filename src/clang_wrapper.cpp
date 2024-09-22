@@ -129,31 +129,6 @@ Module::~Module()
     }
 }
 
-std::shared_ptr<File> Module::astFile()
-{
-    return makeFile(clang_Module_getASTFile(_value));
-}
-
-std::shared_ptr<Module> Module::parent()
-{
-    return makeModule(clang_Module_getParent(_value));
-}
-
-string Module::name()
-{
-    return clang_Module_getName(_value);
-}
-
-string Module::fullName()
-{
-    return clang_Module_getFullName(_value);
-}
-
-int Module::isSystem()
-{
-    return clang_Module_isSystem(_value);
-}
-
 //
 // TranslationUnit
 //
@@ -175,91 +150,6 @@ TranslationUnit::~TranslationUnit()
         }
         clang_disposeTranslationUnit(_value);
     }
-}
-
-string TranslationUnit::name()
-{
-    return clang_getTranslationUnitSpelling(_value);
-}
-
-std::shared_ptr<Cursor> TranslationUnit::cursor()
-{
-    CXCursor cur = clang_getTranslationUnitCursor(_value);
-    _cursor = makeCursor(cur);
-    return _cursor->shared_from_this();
-}
-
-bool TranslationUnit::isFileMultipleIncludeGuarded(File *f)
-{
-    return clang_isFileMultipleIncludeGuarded(_value, f->_value);
-}
-
-std::shared_ptr<File> TranslationUnit::getFile(const std::string &path)
-{
-    return makeFile(clang_getFile(_value, path.c_str()));
-}
-
-string TranslationUnit::getFileContents(File *f)
-{
-    size_t len;
-    const char *data = clang_getFileContents(_value, f->_value, &len);
-    return string(data, len);
-}
-
-std::vector<std::shared_ptr<Diagnostic>> TranslationUnit::diagnostics()
-{
-    std::vector<std::shared_ptr<Diagnostic>> arr;
-    int n = clang_getNumDiagnostics(_value);
-    for (int i = 0; i < n; i++) {
-        arr.push_back(makeDiagnostic(clang_getDiagnostic(_value, i)));
-    }
-    return arr;
-}
-
-std::set<std::shared_ptr<Diagnostic>> TranslationUnit::diagnosticSetFromTU()
-{
-    std::set<std::shared_ptr<Diagnostic>> arr;
-    CXDiagnosticSet diags = clang_getDiagnosticSetFromTU(_value);
-    int n = clang_getNumDiagnosticsInSet(diags);
-    for (int i = 0; i < n; i++) {
-        arr.insert(makeDiagnostic(clang_getDiagnosticInSet(diags, i)));
-    }
-    return arr;
-}
-
-std::shared_ptr<Module> TranslationUnit::moduleForFile(const std::shared_ptr<File> &file)
-{
-    return makeModule(clang_getModuleForFile(_value, file->_value));
-}
-
-unsigned TranslationUnit::numTopLevelHeaders(const std::shared_ptr<Module> &m)
-{
-    return clang_Module_getNumTopLevelHeaders(_value, m->_value);
-}
-
-std::shared_ptr<File> TranslationUnit::topLevelHeader(const std::shared_ptr<Module> &m, unsigned index)
-{
-    return makeFile(clang_Module_getTopLevelHeader(_value, m->_value, index));
-}
-
-unsigned TranslationUnit::defaultSaveOptions()
-{
-    return clang_defaultSaveOptions(_value);
-}
-
-int TranslationUnit::saveTranslationUnit(const std::string &path, unsigned options)
-{
-    return clang_saveTranslationUnit(_value, path.c_str(), options);
-}
-
-unsigned TranslationUnit::suspendTranslationUnit()
-{
-    return clang_suspendTranslationUnit(_value);
-}
-
-unsigned TranslationUnit::defaultReparseOptions()
-{
-    return clang_defaultReparseOptions(_value);
 }
 
 //
@@ -305,21 +195,6 @@ std::shared_ptr<TranslationUnit> Index::parse(const std::string &path, const std
         printf("failed to parse file: %s", path.c_str());
         return std::shared_ptr<TranslationUnit>();
     }
-}
-
-void Index::setGlobalOptions(unsigned options)
-{
-    clang_CXIndex_setGlobalOptions(_value, options);
-}
-
-unsigned Index::getGlobalOptions()
-{
-    return clang_CXIndex_getGlobalOptions(_value);
-}
-
-void Index::setInvocationEmissionPathOption(const std::string &path)
-{
-    clang_CXIndex_setInvocationEmissionPathOption(_value, path.c_str());
 }
 
 const std::string clang::version()

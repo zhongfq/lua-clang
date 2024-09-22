@@ -262,6 +262,9 @@ endif()
 
 target_include_directories(liblua55 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/lua55)
 
-add_executable(luac55 ${LUA55SRC} lua55/luac.c)
+# add_executable(luac55 ${LUA55SRC} lua55/luac.c)
 add_executable(lua55 lua55/lua.c)
+set_target_properties(lua55 PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "lua55"
+    OUTPUT_NAME lua55)
 target_link_libraries(lua55 liblua55)

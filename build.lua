@@ -1,6 +1,7 @@
-OLUA_AUTO_EXPORT_PARENT = true
-
 require "olua"
+
+olua.AUTO_EXPORT_PARENT = true
+olua.AUTO_GEN_PROP = false
 
 -------------------------------------------------------------------------------
 --- clang compile options
@@ -32,7 +33,7 @@ local pattern = {
     '^CXGlobalOpt_', '^CXType_', '^CXCursor_', '^CXDiagnostic_', '^CXCallingConv_',
     '^CXTypeNullability_', '^CXRefQualifier_', '^CXLinkage_', '^CXVisibility_',
     '^CXAvailability_', '^CXLanguage_', '^CXTLS_', '^CXTemplateArgumentKind_',
-    '^CX_CXX', 'CX_SC_'
+    '^CX_CXX', 'CX_SC_', '^CXTranslationUnit_', '^CXError_'
 }
 
 local function luaname(name)
@@ -75,6 +76,8 @@ typeenum 'clangwrapper::TLSKind'
 typeenum 'clangwrapper::TypeKind'
 typeenum 'clangwrapper::TypeNullabilityKind'
 typeenum 'clangwrapper::VisibilityKind'
+typeenum 'clangwrapper::TranslationUnitFlags'
+typeenum 'clangwrapper::ErrorCode'
 
 typeconf 'clangwrapper::Diagnostic'
 typeconf 'clangwrapper::File'
