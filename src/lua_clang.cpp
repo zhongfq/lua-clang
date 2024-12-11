@@ -9,12 +9,9 @@ static int _olua_module_clang(lua_State *L);
 static int _olua_fun_clangwrapper_IndexError___gc(lua_State *L)
 {
     olua_startinvoke(L);
-
     auto self = (clangwrapper::IndexError *)olua_toobj(L, 1, "clang.IndexError");
     olua_postgc(L, self);
-
     olua_endinvoke(L);
-
     return 0;
 }
 
@@ -63,7 +60,7 @@ static int _olua_cls_clang_IndexError(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_IndexError(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.IndexError")) {
         luaL_error(L, "class not found: clangwrapper::IndexError");
     }
@@ -74,12 +71,9 @@ OLUA_END_DECLS
 static int _olua_fun_clangwrapper_Cursor_SourceRange___gc(lua_State *L)
 {
     olua_startinvoke(L);
-
     auto self = (clangwrapper::Cursor::SourceRange *)olua_toobj(L, 1, "clang.Cursor.SourceRange");
     olua_postgc(L, self);
-
     olua_endinvoke(L);
-
     return 0;
 }
 
@@ -379,7 +373,7 @@ static int _olua_cls_clang_Cursor_SourceRange(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_Cursor_SourceRange(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.Cursor.SourceRange")) {
         luaL_error(L, "class not found: clangwrapper::Cursor::SourceRange");
     }
@@ -390,12 +384,9 @@ OLUA_END_DECLS
 static int _olua_fun_clangwrapper_Cursor_SourceLocation___gc(lua_State *L)
 {
     olua_startinvoke(L);
-
     auto self = (clangwrapper::Cursor::SourceLocation *)olua_toobj(L, 1, "clang.Cursor.SourceLocation");
     olua_postgc(L, self);
-
     olua_endinvoke(L);
-
     return 0;
 }
 
@@ -581,7 +572,7 @@ static int _olua_cls_clang_Cursor_SourceLocation(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_Cursor_SourceLocation(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.Cursor.SourceLocation")) {
         luaL_error(L, "class not found: clangwrapper::Cursor::SourceLocation");
     }
@@ -605,7 +596,7 @@ static int _olua_cls_clang_AvailabilityKind(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_AvailabilityKind(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.AvailabilityKind")) {
         luaL_error(L, "class not found: clangwrapper::AvailabilityKind");
     }
@@ -650,7 +641,7 @@ static int _olua_cls_clang_CallingConv(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_CallingConv(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.CallingConv")) {
         luaL_error(L, "class not found: clangwrapper::CallingConv");
     }
@@ -911,6 +902,7 @@ static int _olua_cls_clang_CursorKind(lua_State *L)
     oluacls_enum(L, "ObjCSubclassingRestricted", (lua_Integer)clangwrapper::CursorKind::CXCursor_ObjCSubclassingRestricted);
     oluacls_enum(L, "ObjCSuperClassRef", (lua_Integer)clangwrapper::CursorKind::CXCursor_ObjCSuperClassRef);
     oluacls_enum(L, "ObjCSynthesizeDecl", (lua_Integer)clangwrapper::CursorKind::CXCursor_ObjCSynthesizeDecl);
+    oluacls_enum(L, "OpenACCCombinedConstruct", (lua_Integer)clangwrapper::CursorKind::CXCursor_OpenACCCombinedConstruct);
     oluacls_enum(L, "OpenACCComputeConstruct", (lua_Integer)clangwrapper::CursorKind::CXCursor_OpenACCComputeConstruct);
     oluacls_enum(L, "OpenACCLoopConstruct", (lua_Integer)clangwrapper::CursorKind::CXCursor_OpenACCLoopConstruct);
     oluacls_enum(L, "OverloadCandidate", (lua_Integer)clangwrapper::CursorKind::CXCursor_OverloadCandidate);
@@ -964,7 +956,7 @@ static int _olua_cls_clang_CursorKind(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_CursorKind(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.CursorKind")) {
         luaL_error(L, "class not found: clangwrapper::CursorKind");
     }
@@ -988,7 +980,7 @@ static int _olua_cls_clang_CXXAccessSpecifier(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_CXXAccessSpecifier(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.CXXAccessSpecifier")) {
         luaL_error(L, "class not found: clangwrapper::CXXAccessSpecifier");
     }
@@ -1013,7 +1005,7 @@ static int _olua_cls_clang_DiagnosticSeverity(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_DiagnosticSeverity(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.DiagnosticSeverity")) {
         luaL_error(L, "class not found: clangwrapper::DiagnosticSeverity");
     }
@@ -1037,7 +1029,7 @@ static int _olua_cls_clang_GlobalOptFlags(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_GlobalOptFlags(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.GlobalOptFlags")) {
         luaL_error(L, "class not found: clangwrapper::GlobalOptFlags");
     }
@@ -1061,7 +1053,7 @@ static int _olua_cls_clang_LanguageKind(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_LanguageKind(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.LanguageKind")) {
         luaL_error(L, "class not found: clangwrapper::LanguageKind");
     }
@@ -1086,7 +1078,7 @@ static int _olua_cls_clang_LinkageKind(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_LinkageKind(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.LinkageKind")) {
         luaL_error(L, "class not found: clangwrapper::LinkageKind");
     }
@@ -1109,7 +1101,7 @@ static int _olua_cls_clang_RefQualifierKind(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_RefQualifierKind(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.RefQualifierKind")) {
         luaL_error(L, "class not found: clangwrapper::RefQualifierKind");
     }
@@ -1137,7 +1129,7 @@ static int _olua_cls_clang_StorageClass(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_StorageClass(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.StorageClass")) {
         luaL_error(L, "class not found: clangwrapper::StorageClass");
     }
@@ -1167,7 +1159,7 @@ static int _olua_cls_clang_TemplateArgumentKind(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_TemplateArgumentKind(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.TemplateArgumentKind")) {
         luaL_error(L, "class not found: clangwrapper::TemplateArgumentKind");
     }
@@ -1190,7 +1182,7 @@ static int _olua_cls_clang_TLSKind(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_TLSKind(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.TLSKind")) {
         luaL_error(L, "class not found: clangwrapper::TLSKind");
     }
@@ -1338,7 +1330,7 @@ static int _olua_cls_clang_TypeKind(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_TypeKind(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.TypeKind")) {
         luaL_error(L, "class not found: clangwrapper::TypeKind");
     }
@@ -1363,7 +1355,7 @@ static int _olua_cls_clang_TypeNullabilityKind(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_TypeNullabilityKind(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.TypeNullabilityKind")) {
         luaL_error(L, "class not found: clangwrapper::TypeNullabilityKind");
     }
@@ -1387,7 +1379,7 @@ static int _olua_cls_clang_VisibilityKind(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_VisibilityKind(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.VisibilityKind")) {
         luaL_error(L, "class not found: clangwrapper::VisibilityKind");
     }
@@ -1424,7 +1416,7 @@ static int _olua_cls_clang_TranslationUnitFlags(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_TranslationUnitFlags(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.TranslationUnitFlags")) {
         luaL_error(L, "class not found: clangwrapper::TranslationUnitFlags");
     }
@@ -1449,7 +1441,7 @@ static int _olua_cls_clang_ErrorCode(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_ErrorCode(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.ErrorCode")) {
         luaL_error(L, "class not found: clangwrapper::ErrorCode");
     }
@@ -1642,7 +1634,7 @@ static int _olua_cls_clang_Diagnostic(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_Diagnostic(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.Diagnostic")) {
         luaL_error(L, "class not found: clangwrapper::Diagnostic");
     }
@@ -1780,7 +1772,7 @@ static int _olua_cls_clang_File(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_File(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.File")) {
         luaL_error(L, "class not found: clangwrapper::File");
     }
@@ -2614,7 +2606,7 @@ static int _olua_cls_clang_Type(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_Type(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.Type")) {
         luaL_error(L, "class not found: clangwrapper::Type");
     }
@@ -4450,7 +4442,7 @@ static int _olua_cls_clang_Cursor(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_Cursor(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.Cursor")) {
         luaL_error(L, "class not found: clangwrapper::Cursor");
     }
@@ -4605,7 +4597,7 @@ static int _olua_cls_clang_Module(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_Module(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.Module")) {
         luaL_error(L, "class not found: clangwrapper::Module");
     }
@@ -4944,7 +4936,7 @@ static int _olua_cls_clang_TranslationUnit(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_TranslationUnit(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.TranslationUnit")) {
         luaL_error(L, "class not found: clangwrapper::TranslationUnit");
     }
@@ -5177,7 +5169,7 @@ static int _olua_cls_clang_Index(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_Index(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.Index")) {
         luaL_error(L, "class not found: clangwrapper::Index");
     }
@@ -5188,12 +5180,9 @@ OLUA_END_DECLS
 static int _olua_fun_clangwrapper_clang___gc(lua_State *L)
 {
     olua_startinvoke(L);
-
     auto self = (clangwrapper::clang *)olua_toobj(L, 1, "clang.clang");
     olua_postgc(L, self);
-
     olua_endinvoke(L);
-
     return 0;
 }
 
@@ -5293,7 +5282,7 @@ static int _olua_cls_clang_clang(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang_clang(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
     if (!olua_getclass(L, "clang.clang")) {
         luaL_error(L, "class not found: clangwrapper::clang");
     }
@@ -5307,7 +5296,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_Diagnostic_shared_
 
     std::enable_shared_from_this<clangwrapper::Diagnostic> *self = nullptr;
 
-    olua_to_object(L, 1, &self, "std.enable_shared_from_this<clang.Diagnostic>");
+    olua_to_object(L, 1, &self, "std.enable_shared_from_this_clang_Diagnostic");
 
     // std::shared_ptr<clangwrapper::Diagnostic> shared_from_this()
     std::shared_ptr<clangwrapper::Diagnostic> ret = self->shared_from_this();
@@ -5320,7 +5309,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_Diagnostic_shared_
 
 static int _olua_cls_std_enable_shared_from_this_clang_Diagnostic(lua_State *L)
 {
-    oluacls_class<std::enable_shared_from_this<clangwrapper::Diagnostic>>(L, "std.enable_shared_from_this<clang.Diagnostic>");
+    oluacls_class<std::enable_shared_from_this<clangwrapper::Diagnostic>>(L, "std.enable_shared_from_this_clang_Diagnostic");
     oluacls_func(L, "shared_from_this", _olua_fun_std_enable_shared_from_this_clangwrapper_Diagnostic_shared_from_this);
 
     return 1;
@@ -5329,8 +5318,8 @@ static int _olua_cls_std_enable_shared_from_this_clang_Diagnostic(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_std_enable_shared_from_this_clang_Diagnostic(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
-    if (!olua_getclass(L, "std.enable_shared_from_this<clang.Diagnostic>")) {
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
+    if (!olua_getclass(L, "std.enable_shared_from_this_clang_Diagnostic")) {
         luaL_error(L, "class not found: std::enable_shared_from_this<clangwrapper::Diagnostic>");
     }
     return 1;
@@ -5343,7 +5332,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_File_shared_from_t
 
     std::enable_shared_from_this<clangwrapper::File> *self = nullptr;
 
-    olua_to_object(L, 1, &self, "std.enable_shared_from_this<clang.File>");
+    olua_to_object(L, 1, &self, "std.enable_shared_from_this_clang_File");
 
     // std::shared_ptr<clangwrapper::File> shared_from_this()
     std::shared_ptr<clangwrapper::File> ret = self->shared_from_this();
@@ -5356,7 +5345,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_File_shared_from_t
 
 static int _olua_cls_std_enable_shared_from_this_clang_File(lua_State *L)
 {
-    oluacls_class<std::enable_shared_from_this<clangwrapper::File>>(L, "std.enable_shared_from_this<clang.File>");
+    oluacls_class<std::enable_shared_from_this<clangwrapper::File>>(L, "std.enable_shared_from_this_clang_File");
     oluacls_func(L, "shared_from_this", _olua_fun_std_enable_shared_from_this_clangwrapper_File_shared_from_this);
 
     return 1;
@@ -5365,8 +5354,8 @@ static int _olua_cls_std_enable_shared_from_this_clang_File(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_std_enable_shared_from_this_clang_File(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
-    if (!olua_getclass(L, "std.enable_shared_from_this<clang.File>")) {
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
+    if (!olua_getclass(L, "std.enable_shared_from_this_clang_File")) {
         luaL_error(L, "class not found: std::enable_shared_from_this<clangwrapper::File>");
     }
     return 1;
@@ -5379,7 +5368,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_Type_shared_from_t
 
     std::enable_shared_from_this<clangwrapper::Type> *self = nullptr;
 
-    olua_to_object(L, 1, &self, "std.enable_shared_from_this<clang.Type>");
+    olua_to_object(L, 1, &self, "std.enable_shared_from_this_clang_Type");
 
     // std::shared_ptr<clangwrapper::Type> shared_from_this()
     std::shared_ptr<clangwrapper::Type> ret = self->shared_from_this();
@@ -5392,7 +5381,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_Type_shared_from_t
 
 static int _olua_cls_std_enable_shared_from_this_clang_Type(lua_State *L)
 {
-    oluacls_class<std::enable_shared_from_this<clangwrapper::Type>>(L, "std.enable_shared_from_this<clang.Type>");
+    oluacls_class<std::enable_shared_from_this<clangwrapper::Type>>(L, "std.enable_shared_from_this_clang_Type");
     oluacls_func(L, "shared_from_this", _olua_fun_std_enable_shared_from_this_clangwrapper_Type_shared_from_this);
 
     return 1;
@@ -5401,8 +5390,8 @@ static int _olua_cls_std_enable_shared_from_this_clang_Type(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_std_enable_shared_from_this_clang_Type(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
-    if (!olua_getclass(L, "std.enable_shared_from_this<clang.Type>")) {
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
+    if (!olua_getclass(L, "std.enable_shared_from_this_clang_Type")) {
         luaL_error(L, "class not found: std::enable_shared_from_this<clangwrapper::Type>");
     }
     return 1;
@@ -5415,7 +5404,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_Cursor_shared_from
 
     std::enable_shared_from_this<clangwrapper::Cursor> *self = nullptr;
 
-    olua_to_object(L, 1, &self, "std.enable_shared_from_this<clang.Cursor>");
+    olua_to_object(L, 1, &self, "std.enable_shared_from_this_clang_Cursor");
 
     // std::shared_ptr<clangwrapper::Cursor> shared_from_this()
     std::shared_ptr<clangwrapper::Cursor> ret = self->shared_from_this();
@@ -5428,7 +5417,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_Cursor_shared_from
 
 static int _olua_cls_std_enable_shared_from_this_clang_Cursor(lua_State *L)
 {
-    oluacls_class<std::enable_shared_from_this<clangwrapper::Cursor>>(L, "std.enable_shared_from_this<clang.Cursor>");
+    oluacls_class<std::enable_shared_from_this<clangwrapper::Cursor>>(L, "std.enable_shared_from_this_clang_Cursor");
     oluacls_func(L, "shared_from_this", _olua_fun_std_enable_shared_from_this_clangwrapper_Cursor_shared_from_this);
 
     return 1;
@@ -5437,8 +5426,8 @@ static int _olua_cls_std_enable_shared_from_this_clang_Cursor(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_std_enable_shared_from_this_clang_Cursor(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
-    if (!olua_getclass(L, "std.enable_shared_from_this<clang.Cursor>")) {
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
+    if (!olua_getclass(L, "std.enable_shared_from_this_clang_Cursor")) {
         luaL_error(L, "class not found: std::enable_shared_from_this<clangwrapper::Cursor>");
     }
     return 1;
@@ -5451,7 +5440,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_Module_shared_from
 
     std::enable_shared_from_this<clangwrapper::Module> *self = nullptr;
 
-    olua_to_object(L, 1, &self, "std.enable_shared_from_this<clang.Module>");
+    olua_to_object(L, 1, &self, "std.enable_shared_from_this_clang_Module");
 
     // std::shared_ptr<clangwrapper::Module> shared_from_this()
     std::shared_ptr<clangwrapper::Module> ret = self->shared_from_this();
@@ -5464,7 +5453,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_Module_shared_from
 
 static int _olua_cls_std_enable_shared_from_this_clang_Module(lua_State *L)
 {
-    oluacls_class<std::enable_shared_from_this<clangwrapper::Module>>(L, "std.enable_shared_from_this<clang.Module>");
+    oluacls_class<std::enable_shared_from_this<clangwrapper::Module>>(L, "std.enable_shared_from_this_clang_Module");
     oluacls_func(L, "shared_from_this", _olua_fun_std_enable_shared_from_this_clangwrapper_Module_shared_from_this);
 
     return 1;
@@ -5473,8 +5462,8 @@ static int _olua_cls_std_enable_shared_from_this_clang_Module(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_std_enable_shared_from_this_clang_Module(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
-    if (!olua_getclass(L, "std.enable_shared_from_this<clang.Module>")) {
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
+    if (!olua_getclass(L, "std.enable_shared_from_this_clang_Module")) {
         luaL_error(L, "class not found: std::enable_shared_from_this<clangwrapper::Module>");
     }
     return 1;
@@ -5487,7 +5476,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_TranslationUnit_sh
 
     std::enable_shared_from_this<clangwrapper::TranslationUnit> *self = nullptr;
 
-    olua_to_object(L, 1, &self, "std.enable_shared_from_this<clang.TranslationUnit>");
+    olua_to_object(L, 1, &self, "std.enable_shared_from_this_clang_TranslationUnit");
 
     // std::shared_ptr<clangwrapper::TranslationUnit> shared_from_this()
     std::shared_ptr<clangwrapper::TranslationUnit> ret = self->shared_from_this();
@@ -5500,7 +5489,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_TranslationUnit_sh
 
 static int _olua_cls_std_enable_shared_from_this_clang_TranslationUnit(lua_State *L)
 {
-    oluacls_class<std::enable_shared_from_this<clangwrapper::TranslationUnit>>(L, "std.enable_shared_from_this<clang.TranslationUnit>");
+    oluacls_class<std::enable_shared_from_this<clangwrapper::TranslationUnit>>(L, "std.enable_shared_from_this_clang_TranslationUnit");
     oluacls_func(L, "shared_from_this", _olua_fun_std_enable_shared_from_this_clangwrapper_TranslationUnit_shared_from_this);
 
     return 1;
@@ -5509,8 +5498,8 @@ static int _olua_cls_std_enable_shared_from_this_clang_TranslationUnit(lua_State
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_std_enable_shared_from_this_clang_TranslationUnit(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
-    if (!olua_getclass(L, "std.enable_shared_from_this<clang.TranslationUnit>")) {
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
+    if (!olua_getclass(L, "std.enable_shared_from_this_clang_TranslationUnit")) {
         luaL_error(L, "class not found: std::enable_shared_from_this<clangwrapper::TranslationUnit>");
     }
     return 1;
@@ -5523,7 +5512,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_Index_shared_from_
 
     std::enable_shared_from_this<clangwrapper::Index> *self = nullptr;
 
-    olua_to_object(L, 1, &self, "std.enable_shared_from_this<clang.Index>");
+    olua_to_object(L, 1, &self, "std.enable_shared_from_this_clang_Index");
 
     // std::shared_ptr<clangwrapper::Index> shared_from_this()
     std::shared_ptr<clangwrapper::Index> ret = self->shared_from_this();
@@ -5536,7 +5525,7 @@ static int _olua_fun_std_enable_shared_from_this_clangwrapper_Index_shared_from_
 
 static int _olua_cls_std_enable_shared_from_this_clang_Index(lua_State *L)
 {
-    oluacls_class<std::enable_shared_from_this<clangwrapper::Index>>(L, "std.enable_shared_from_this<clang.Index>");
+    oluacls_class<std::enable_shared_from_this<clangwrapper::Index>>(L, "std.enable_shared_from_this_clang_Index");
     oluacls_func(L, "shared_from_this", _olua_fun_std_enable_shared_from_this_clangwrapper_Index_shared_from_this);
 
     return 1;
@@ -5545,8 +5534,8 @@ static int _olua_cls_std_enable_shared_from_this_clang_Index(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_std_enable_shared_from_this_clang_Index(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
-    if (!olua_getclass(L, "std.enable_shared_from_this<clang.Index>")) {
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
+    if (!olua_getclass(L, "std.enable_shared_from_this_clang_Index")) {
         luaL_error(L, "class not found: std::enable_shared_from_this<clangwrapper::Index>");
     }
     return 1;
@@ -5583,13 +5572,13 @@ int _olua_module_clang(lua_State *L)
     olua_require(L, "clang.TranslationUnit", _olua_cls_clang_TranslationUnit);
     olua_require(L, "clang.Index", _olua_cls_clang_Index);
     olua_require(L, "clang.clang", _olua_cls_clang_clang);
-    olua_require(L, "std.enable_shared_from_this<clang.Diagnostic>", _olua_cls_std_enable_shared_from_this_clang_Diagnostic);
-    olua_require(L, "std.enable_shared_from_this<clang.File>", _olua_cls_std_enable_shared_from_this_clang_File);
-    olua_require(L, "std.enable_shared_from_this<clang.Type>", _olua_cls_std_enable_shared_from_this_clang_Type);
-    olua_require(L, "std.enable_shared_from_this<clang.Cursor>", _olua_cls_std_enable_shared_from_this_clang_Cursor);
-    olua_require(L, "std.enable_shared_from_this<clang.Module>", _olua_cls_std_enable_shared_from_this_clang_Module);
-    olua_require(L, "std.enable_shared_from_this<clang.TranslationUnit>", _olua_cls_std_enable_shared_from_this_clang_TranslationUnit);
-    olua_require(L, "std.enable_shared_from_this<clang.Index>", _olua_cls_std_enable_shared_from_this_clang_Index);
+    olua_require(L, "std.enable_shared_from_this_clang_Diagnostic", _olua_cls_std_enable_shared_from_this_clang_Diagnostic);
+    olua_require(L, "std.enable_shared_from_this_clang_File", _olua_cls_std_enable_shared_from_this_clang_File);
+    olua_require(L, "std.enable_shared_from_this_clang_Type", _olua_cls_std_enable_shared_from_this_clang_Type);
+    olua_require(L, "std.enable_shared_from_this_clang_Cursor", _olua_cls_std_enable_shared_from_this_clang_Cursor);
+    olua_require(L, "std.enable_shared_from_this_clang_Module", _olua_cls_std_enable_shared_from_this_clang_Module);
+    olua_require(L, "std.enable_shared_from_this_clang_TranslationUnit", _olua_cls_std_enable_shared_from_this_clang_TranslationUnit);
+    olua_require(L, "std.enable_shared_from_this_clang_Index", _olua_cls_std_enable_shared_from_this_clang_Index);
 
     return 0;
 }
@@ -5597,7 +5586,7 @@ int _olua_module_clang(lua_State *L)
 OLUA_BEGIN_DECLS
 OLUA_LIB int luaopen_clang(lua_State *L)
 {
-    olua_require(L, "clang",  _olua_module_clang);
+    olua_require(L, ".olua.module.clang",  _olua_module_clang);
 
     if (olua_getclass(L, "clang.clang")) {
         return 1;
